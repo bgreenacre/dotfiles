@@ -31,7 +31,7 @@ autocmd FileType php set smartindent
 autocmd FileType javascript set smartindent
 set autoindent
 set copyindent
-set noexpandtab tabstop=4 shiftwidth=4
+set expandtab tabstop=4 shiftwidth=4
 set shiftround
 set smartcase
 set ignorecase
