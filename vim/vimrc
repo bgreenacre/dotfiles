@@ -27,10 +27,9 @@ set laststatus=2
 set nowrap
 syntax on
 filetype plugin indent on
-autocmd FileType php set smartindent
-autocmd FileType javascript set smartindent
 set autoindent
 set copyindent
+"set smartindent
 set expandtab tabstop=4 shiftwidth=4
 set shiftround
 set smartcase
