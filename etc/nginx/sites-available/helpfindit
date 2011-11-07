@@ -1,0 +1,55 @@
+server {
+
+	listen   80; ## listen for ipv4
+
+	server_name  helpfindit;
+	root   /home/brian/public_html/helpfindit;
+	access_log  /var/log/nginx/helpfindit.access.log;
+	error_log  /var/log/nginx/helpfindit.error.log;
+	index index.php;
+
+	location / {
+		try_files $uri $uri/ /index.php?$query_string;
+	}
+
+	#error_page  404  /404.html;
+
+	# redirect server error pages to the static page /50x.html
+	#
+	#error_page   500 502 503 504  /50x.html;
+	#location = /50x.html {
+	#	root   /var/www/nginx-default;
+	#}
+
+	# proxy the PHP scripts to Apache listening on 127.0.0.1:80
+	#
+	#location ~ \.php$ {
+		#proxy_pass   http://127.0.0.1;
+	#}
+
+	# pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000
+	#
+	location ~ \.php$ {
+		fastcgi_split_path_info ^(.+\.php)(/.+)$;
+		include /etc/nginx/fastcgi_params;
+		fastcgi_intercept_errors on;
+		fastcgi_ignore_client_abort off;
+		fastcgi_connect_timeout 60;
+		fastcgi_send_timeout 180;
+		fastcgi_read_timeout 180;
+		fastcgi_buffers	4 256k;
+		fastcgi_buffer_size	128k;
+		fastcgi_busy_buffers_size 256k;
+		fastcgi_temp_file_write_size 256k;
+		fastcgi_pass   127.0.0.1:9000;
+		fastcgi_index  index.php;
+	}
+
+	# deny access to .htaccess files, if Apache's document root
+	# concurs with nginx's one
+	#
+	location ~ /\.ht {
+		deny  all;
+	}
+}
+
