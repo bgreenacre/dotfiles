@@ -1,0 +1,3 @@
+#!/bin/bash
+
+java -Xmx1024M -Xms512M -cp ~/bin/minecraft.jar net.minecraft.LauncherFrame
