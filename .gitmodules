@@ -19,3 +19,6 @@
 [submodule "vim/bundle/sparkup"]
 	path = vim/bundle/sparkup
 	url = https://github.com/rstacruz/sparkup.git
+[submodule "bitpocket"]
+	path = bitpocket
+	url = git://github.com/sickill/bitpocket.git
