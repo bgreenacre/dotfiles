@@ -65,6 +65,8 @@ noremap <leader>m <Esc>:CommandTBuffer<CR>
 autocmd FileType html,htmldjango,jinjahtml,eruby,mako let b:closetag_html_style=1
 autocmd FileType html,xhtml,xml,htmldjango,jinjahtml,eruby,mako source ~/.vim/bundle/closetag/plugin/closetag.vim
 
+" Set the php doc block config
+" let g:pdv_cfg_Package = 
 " Map php doc block
 inoremap <C-B> <ESC>:call PhpDocSingle()<CR>i
 nnoremap <C-B> :call PhpDocSingle()<CR>
@@ -79,4 +81,6 @@ nnoremap ; :
 
 " Make editing sudo required files easier
 cmap w!! w !sudo tee % >/dev/null
-set statusline=%f\ %{fugitive#statusline()}\ %r\ %m
+
+" Set status line to include git branch
+set statusline=%f\ %{fugitive#statusline()}%r%m%=%c,%l/%L\ %P
