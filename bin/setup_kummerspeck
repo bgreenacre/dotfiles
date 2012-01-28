@@ -1,0 +1,23 @@
+#!/bin/bash
+sudo echo "10.98.0.164 uxint" >> /etc/hosts
+sudo echo "10.98.0.124 uxdb" >> /etc/hosts
+sudo echo "10.98.0.29 uxdev" >> /etc/hosts
+echo "Added in hosts."
+echo "Type in password1 for the git user login below."
+ssh-copy-id -i ~/.ssh/id_rsa.pub git@uxdev
+echo "Done adding ssh key."
+mkdir -p ~/projects/test
+cd ~/projects/test
+git clone ssh://git@uxdev/home/git/repos/kummerspeck/package/api.git
+cd api/
+git submodule init && git submodule update
+cd ../
+git clone ssh://git@uxdev/home/git/repos/kummerspeck/package/gui.git
+cd gui/
+git submodule init && git submodule update
+cd ../
+git clone ssh://git@uxdev/home/git/repos/kummerspeck/package/cms.git
+cd cms/
+git submodule init && git submodule update
+cd ../
+echo "All Done."

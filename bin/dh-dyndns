@@ -1,0 +1,88 @@
+#!/bin/sh
+# vi: ts=4 noexpandtab
+
+DEF_URL="http://your.dreamhost.account.com/dh-dyndns.php?"
+
+Usage() {
+	cat <<EOF
+Usage: ${0##*/} host [ addr ]
+         --dh-dnsurl u  use dnsurl rather than ${DEF_URL}
+    -h | --help         print usage
+    -k | --key    k     use 'k' as the dreamhost api key
+    -p | --passwd p     use password 'p'
+         --passfile f   read password (plaintext) from 'f'
+    
+EOF
+}
+url_encode() {
+	# from http://andy.wordpress.com/2008/09/17/urlencode-in-bash-with-perl/
+	# also could modify (awk)
+	# http://www.shelldorado.com/scripts/cmds/urlencode
+	_RET=$(echo -n "$1" |
+		perl -pe's/([^-_.~A-Za-z0-9])/sprintf("%%%02X", ord($1))/seg');
+}
+
+bad_Usage() { Usage >&2; fail "$@"; }
+
+error() { echo "$@" 1>&2; }
+fail() { [ $# -eq 0 ] || error "$@"; exit 1; }
+
+short_opts="hp:"
+long_opts="help,dhdns-url:,key:,passwd:,passfile:"
+getopt_out=$(getopt --name "${0##*/}" \
+	--options "${short_opts}" --long "${long_opts}" -- "$@") &&
+	eval set -- "${getopt_out}" ||
+	bad_Usage
+
+passwd=""
+url="${DEF_URL}"
+key=""
+
+while [ $# -ne 0 ]; do
+	cur=${1}; next=${2};
+	case "$cur" in
+		   --dhdns-url) url="${next}"; shift;;
+		-h|--help) Usage; exit 0;;
+		-k|--key) key=${next}; shift;;
+		-p|--passwd) passwd=${next}; shift;;
+		   --passfile) 
+			shift;
+			read passwd < "${next}" ||
+				fail "failed to read pass from ${next}";;
+		--) shift; break;;
+	esac
+	shift;
+done
+
+[ $# -ge 1 ] || bad_Usage "must provide host"
+[ $# -lt 3 ] || bad_Usage "expected only 2 args, given $#"
+
+host=${1}
+addr=${2}
+case "$addr" in
+	[0-9]*.[0-9]*.[0-9]*.[0-9]*) :;;
+	auto) addr="";;
+	:) fail "addr doesn't appear to be an ip addr";;
+esac
+
+# note, passwd (and other values) really need to be url encoded
+url="${url%?}?"
+data=""
+for x in "key:${key}" "passwd:${passwd}" "host:${host}" "addr:$addr"; do
+	key=${x%%:*}; val=${x#*:};
+	[ -n "${val}" ] || continue
+	url_encode "${val}" ||
+		fail "failed to url_encode input."
+	data="${data}&${key}=${_RET}"
+done
+
+out=$(wget -q "${url}${data}" -O -) ||
+	fail "failed to request url. edit DEF_URL or pass --dh-dnsurl"
+summary=${out%%:*}
+
+case "${summary}" in
+	success) printf "%s\n" "${out}"; exit 0;;
+	up-to-date) printf "%s\n" "${out}"; exit 0;;
+	error) fail "${out}";;
+	*) fail "unknown response ${out}";;
+esac
