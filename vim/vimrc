@@ -79,6 +79,8 @@ autocmd filetype html,xml set listchars-=tab:>.
 
 nnoremap ; :
 
+nmap <F8> :TagbarToggle<CR>
+
 " Make editing sudo required files easier
 cmap w!! w !sudo tee % >/dev/null
 
