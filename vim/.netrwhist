@@ -1,5 +1,5 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =7
+let g:netrw_dirhist_cnt =9
 let g:netrw_dirhist_1='/home/brian/projects/hon/modules'
 let g:netrw_dirhist_2='/home/brian/projects/hon/modules/hon_www'
 let g:netrw_dirhist_3='/home/brian/projects/kopress/modules/kopress/classes/config/site'
@@ -7,3 +7,5 @@ let g:netrw_dirhist_4='/home/brian/projects/kummerspeck/api/applications/api/app
 let g:netrw_dirhist_5='/home/brian/projects/kummerspeck/api/applications/api/application/classes/kohana/model/meta'
 let g:netrw_dirhist_6='/home/brian/projects/kummerspeck/api/applications/api/application/classes/kohana/controller/webservices/mml'
 let g:netrw_dirhist_7='/home/brian/projects/pluck/trunk/js/TABS'
+let g:netrw_dirhist_8='/home/brian/projects/random_blog/vendor/bin'
+let g:netrw_dirhist_9='/etc/nginx/sites-available'
