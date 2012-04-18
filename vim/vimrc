@@ -81,6 +81,9 @@ nnoremap ; :
 
 nmap <F8> :TagbarToggle<CR>
 
+:autocmd FileType php noremap <C-Y> :w!<CR>:!php %<CR>
+:autocmd FileType php noremap <C-N> :!php -l %<CR>
+
 " Make editing sudo required files easier
 cmap w!! w !sudo tee % >/dev/null
 

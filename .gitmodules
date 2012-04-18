@@ -22,3 +22,6 @@
 [submodule "bitpocket"]
 	path = bitpocket
 	url = git://github.com/sickill/bitpocket.git
+[submodule "vim/bundle/dbgp"]
+	path = vim/bundle/dbgp
+	url = https://github.com/jsoriano/vim-dbgp.git
