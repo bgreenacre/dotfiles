@@ -25,3 +25,6 @@
 [submodule "vim/bundle/dbgp"]
 	path = vim/bundle/dbgp
 	url = https://github.com/jsoriano/vim-dbgp.git
+[submodule "share/php/libs/kohana/system"]
+	path = share/php/libs/kohana/system
+	url = https://github.com/kohana/core.git
