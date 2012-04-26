@@ -1,1 +1,5 @@
+# add paths to home folder
 PATH=$PATH:$HOME/bin
+
+SITE_ENV=development
+KOHANA_ENV=$SITE_ENV
