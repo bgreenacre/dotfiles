@@ -91,4 +91,7 @@ set statusline=%f\ %{fugitive#statusline()}%r%m%=%c,%l/%L\ %P
 
 if has('gui_running')
     colorscheme mustang
+    nmap <C-V> "+gP
+    imap <C-V> <ESC><C-V>i
+    vmap <C-C> "+y
 endif
