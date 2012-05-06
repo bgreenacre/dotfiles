@@ -9,7 +9,7 @@ set hidden
 set termencoding=utf-8
 set backspace=indent,eol,start
 set fileencodings=ucs-bom,utf-8,default,latin1
-set guifont=Monospace\ 8
+set guifont=Droid\ Sans\ Mono\ 10
 set fileformats=unix,dos
 set history=2000
 set undolevels=2000
@@ -54,7 +54,6 @@ set wmh=0
 nnoremap <silent> <F8> :TlistToggle<CR>
 nmap <silent> ,/ :nohlsearch<CR>
 colors desert
-" colorscheme mustang
 
 " Remap for Command-t
 noremap <leader>o <Esc>:CommandT<CR>
@@ -89,3 +88,7 @@ cmap w!! w !sudo tee % >/dev/null
 
 " Set status line to include git branch
 set statusline=%f\ %{fugitive#statusline()}%r%m%=%c,%l/%L\ %P
+
+if has('gui_running')
+    colorscheme mustang
+endif
