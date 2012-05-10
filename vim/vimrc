@@ -20,8 +20,8 @@ set number
 set mouse=a
 set noerrorbells
 set visualbell
-set nobackup
-set noswapfile
+"set nobackup
+"set noswapfile
 set showmatch
 set laststatus=2
 set nowrap
@@ -89,6 +89,11 @@ cmap w!! w !sudo tee % >/dev/null
 " Set status line to include git branch
 set statusline=%f\ %{fugitive#statusline()}%r%m%=%c,%l/%L\ %P
 
+" Swap and backup locations
+set backupdir=./.backup/vim,.,/tmp
+set directory=.,./.backup/swap,/tmp
+
+" GUI settings
 if has('gui_running')
     colorscheme mustang
     nmap <C-V> "+gP
