@@ -90,8 +90,8 @@ cmap w!! w !sudo tee % >/dev/null
 set statusline=%f\ %{fugitive#statusline()}%r%m%=%c,%l/%L\ %P
 
 " Swap and backup locations
-set backupdir=./.backup/vim,.,/tmp
-set directory=.,./.backup/swap,/tmp
+set backupdir=~/.backup/vim/,./.backup/vim,.,/tmp
+set directory=~/.backup/swap/,.,./.backup/swap,/tmp
 
 " GUI settings
 if has('gui_running')
