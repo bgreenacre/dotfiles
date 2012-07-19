@@ -92,6 +92,7 @@ set statusline=%f\ %{fugitive#statusline()}%r%m%=%c,%l/%L\ %P
 " Swap and backup locations
 set backupdir=~/.backup/vim/,./.backup/vim,.,/tmp
 set directory=~/.backup/swap/,.,./.backup/swap,/tmp
+set autoread
 
 " GUI settings
 if has('gui_running')
