@@ -1,2 +1,0 @@
-#!/bin/bash
-php ~/bin/composer.phar $1
