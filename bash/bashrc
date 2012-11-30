@@ -3,3 +3,5 @@ PATH=$PATH:$HOME/bin:/opt/vagrant/bin
 
 SITE_ENV=development
 KOHANA_ENV=$SITE_ENV
+
+alias composer='php ~/bin/composer.phar'
