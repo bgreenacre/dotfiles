@@ -1,0 +1,39 @@
+#!/bin/bash
+
+echo $HOME
+
+function do_ppa_add() {
+    if [ -f $HOME/dotfiles/share/apt/ppas ]
+        for ppa in $HOME/dotfiles/share/apt/ppas
+        do
+            apt-add-repository -y "$ppa"
+        done
+
+        apt-get update -y
+    fi
+}
+
+function do_upgrade() {
+    apt-get update -y && apt-get dist-upgrade -y
+}
+
+function do_install_apps() {
+    do_ppa_add()
+
+    apt-get install -y vim git-core libreoffice vlc clementine openjdk-7-jre\
+        wget curl
+}
+
+function do_remove_apps() {
+    apt-get remove -y abiword parole gmusicbrowser
+}
+
+function do_install_mainline_kernel() {
+    wget -O /tmp/kernel-image.deb http://kernel.ubuntu.com/~kernel-ppa/mainline/v3.4-precise/linux-image-3.4.0-030400-generic_3.4.0-030400.201205210521_amd64.deb
+    wget -O /tmp/kernel-header-all.deb http://kernel.ubuntu.com/~kernel-ppa/mainline/v3.4-precise/linux-headers-3.4.0-030400_3.4.0-030400.201205210521_all.deb
+    wget -O /tmp/kernel-header.deb http://kernel.ubuntu.com/~kernel-ppa/mainline/v3.4-precise/linux-headers-3.4.0-030400-generic_3.4.0-030400.201205210521_amd64.deb
+
+    dpkg -i /tmp/kernel-header-all.deb
+    dpkg -i /tmp/kernel-header.deb
+    dpkg -i /tmp/kernel-image.deb
+}
