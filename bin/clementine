@@ -1,8 +1,0 @@
-#!/bin/bash
-rm ~/.config/Clementine/clementine.db
-if [ -e "/media/STUFF/MUSIC/albums/.clementine.db" ]; then
-    ln -s "/media/STUFF/MUSIC/albums/.clementine.db" ~/.config/Clementine/clementine.db
-else
-    ln -s "$HOME/Music/Albums/.clementine.db" ~/.config/Clementine/clementine.db
-fi
-/usr/bin/clementine
