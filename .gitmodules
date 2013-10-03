@@ -25,3 +25,6 @@
 [submodule "share/php/libs/kohana/system"]
 	path = share/php/libs/kohana/system
 	url = https://github.com/kohana/core.git
+[submodule "vim/bundle/vdebug"]
+	path = vim/bundle/vdebug
+	url = git@github.com:joonty/vdebug.git
