@@ -5,3 +5,9 @@ SITE_ENV=development
 KOHANA_ENV=$SITE_ENV
 
 #alias composer='php ~/bin/composer.phar'
+if [ -f ~/dotfiles/git/git-autocomplete.sh ]; then
+    . ~/dotfiles/git/git-autocomplete.sh
+fi
+
+alias android-connect="mtpfs -o allow_other /media/GalaxyNexus"
+alias android-disconnect="fusermount -u /media/GalaxyNexus"
