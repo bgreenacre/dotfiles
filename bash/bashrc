@@ -12,4 +12,4 @@ fi
 alias android-connect="mtpfs -o allow_other /media/GalaxyNexus"
 alias android-disconnect="fusermount -u /media/GalaxyNexus"
 
-export VAGRANT_HOME="/media/disc/vagrant.d"
+#export VAGRANT_HOME="/media/disc/vagrant.d"
