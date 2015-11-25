@@ -10,6 +10,9 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'tpope/vim-fugitive'
 Plugin 'scrooloose/nerdtree'
 Plugin 'wincent/command-t'
+Plugin 'vim-scripts/php.vim--Garvin'
+Plugin 'hail2u/vim-css3-syntax'
+Plugin 'groenewege/vim-less'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
