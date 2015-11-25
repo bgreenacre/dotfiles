@@ -1,3 +1,0 @@
-#!/bin/bash
-if amixer get Mic,0 | grep -q '\[on\]' ; then amixer -q set Mic,0 nocap ; else amixer -q set Mic,0 cap; fi
-if amixer get 'Internal Mic',0 | grep -q '\[on\]' ; then amixer -q set 'Internal Mic',0 nocap ; else amixer -q set 'Internal Mic',0 cap; fi
