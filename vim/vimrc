@@ -1,10 +1,7 @@
-" let pathogen handle plugin load
-call pathogen#helptags()
-call pathogen#runtime_append_all_bundles()
-
 " change the mapleader from \ to ,
 let mapleader=","
 
+" set some defaults
 set hidden
 set termencoding=utf-8
 set backspace=indent,eol,start
@@ -37,7 +34,11 @@ set ignorecase
 set smarttab
 set hlsearch
 set incsearch
+set wmw=0
+set wmh=0
 set pastetoggle=<F2>
+colors desert
+nnoremap ; :
 
 " Easy window navigation
 map <C-J> <C-W>j<C-W>_
@@ -47,39 +48,27 @@ map <C-L> <C-W>l
 map <C-E> <C-W>=
 map <C-B> <C-W><bar>
 
+" easy pasting
 map <C-P> :set paste<Return>
 map <C-A> :set nopaste<Return>
-set wmw=0
-set wmh=0
-nnoremap <silent> <F8> :TlistToggle<CR>
-nmap <silent> ,/ :nohlsearch<CR>
-colors desert
-
-" Remap for Command-t
-noremap <leader>o <Esc>:CommandT<CR>
-noremap <leader>O <Esc>:CommandTFlush<CR>
-noremap <leader>m <Esc>:CommandTBuffer<CR>
-
-" Use CloseTag for certain filetypes
-autocmd FileType html,htmldjango,jinjahtml,eruby,mako let b:closetag_html_style=1
-autocmd FileType html,xhtml,xml,htmldjango,jinjahtml,eruby,mako source ~/.vim/bundle/closetag/plugin/closetag.vim
-
-" Set the php doc block config
-" let g:pdv_cfg_Package = 
-" Map php doc block
-inoremap <C-B> <ESC>:call PhpDocSingle()<CR>i
-nnoremap <C-B> :call PhpDocSingle()<CR>
-vnoremap <C-B> :call PhpDocRange()<CR> 
 
 " Show evil tabs
 set list
 set listchars=tab:>.,trail:.,extends:#,nbsp:.
 autocmd filetype html,xml set listchars-=tab:>.
 
-nnoremap ; :
+" Use CloseTag for certain filetypes
+"autocmd FileType html,htmldjango,jinjahtml,eruby,mako let b:closetag_html_style=1
+"autocmd FileType html,xhtml,xml,htmldjango,jinjahtml,eruby,mako source ~/.vim/bundle/closetag/plugin/closetag.vim
 
-nmap <F8> :TagbarToggle<CR>
+" Set the php doc block config
+" let g:pdv_cfg_Package = 
+" Map php doc block
+"inoremap <C-B> <ESC>:call PhpDocSingle()<CR>i
+"nnoremap <C-B> :call PhpDocSingle()<CR>
+"vnoremap <C-B> :call PhpDocRange()<CR> 
 
+" easy php lint
 :autocmd FileType php noremap <C-Y> :w!<CR>:!php %<CR>
 :autocmd FileType php noremap <C-N> :!php -l %<CR>
 
@@ -87,17 +76,9 @@ nmap <F8> :TagbarToggle<CR>
 cmap w!! w !sudo tee % >/dev/null
 
 " Set status line to include git branch
-set statusline=%f\ %{fugitive#statusline()}%r%m%=%c,%l/%L\ %P
+"set statusline=%f\ %{fugitive#statusline()}%r%m%=%c,%l/%L\ %P
 
 " Swap and backup locations
 set backupdir=~/.backup/vim/,./.backup/vim,.,/tmp
 set directory=~/.backup/swap/,.,./.backup/swap,/tmp
 set autoread
-
-" GUI settings
-if has('gui_running')
-    colorscheme mustang
-    nmap <C-V> "+gP
-    imap <C-V> <ESC><C-V>i
-    vmap <C-C> "+y
-endif
