@@ -25,6 +25,3 @@
 [submodule "vim/bundle/vdebug"]
 	path = vim/bundle/vdebug
 	url = git@github.com:joonty/vdebug.git
-[submodule "gitcrypt"]
-	path = gitcrypt
-	url = https://github.com/shadowhand/git-encrypt.git
