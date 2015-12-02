@@ -1,6 +1,10 @@
 # add paths to home folder
 PATH=$PATH:~/bin:/opt/vagrant/bin
 
+if [ -d ~/packer ]; then
+    PATH=$PATH:~/packer
+fi
+
 SITE_ENV=development
 KOHANA_ENV=$SITE_ENV
 
