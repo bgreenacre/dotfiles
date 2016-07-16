@@ -1,8 +1,13 @@
 # add paths to home folder
-PATH=$PATH:~/bin:/opt/vagrant/bin
+export PATH=$PATH:~/bin:/opt/vagrant/bin
+export NSS_SSL_CBC_RANDOM_IV=0
 
 if [ -d ~/packer ]; then
-    PATH=$PATH:~/packer
+    export PATH=$PATH:~/packer
+fi
+
+if [ -d $HOME/.composer/vendor/bin ]; then
+    export PATH=$PATH:$HOME/.composer/vendor/bin
 fi
 
 SITE_ENV=development
@@ -15,5 +20,6 @@ fi
 
 alias android-connect="mtpfs -o allow_other /media/GalaxyNexus"
 alias android-disconnect="fusermount -u /media/GalaxyNexus"
+#alias pidgin="export NSS_SSL_CBC_RANDOM_IV=0 && /usr/bin/pidgin"
 
 #export VAGRANT_HOME="/media/disc/vagrant.d"
