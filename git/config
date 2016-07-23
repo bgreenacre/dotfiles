@@ -3,3 +3,5 @@
 	email = bgreenacre42@gmail.com
 [push]
 	default = matching
+[core]
+	autocrlf = input

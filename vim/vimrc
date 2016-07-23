@@ -13,6 +13,7 @@ Plugin 'wincent/command-t'
 Plugin 'vim-scripts/php.vim--Garvin'
 Plugin 'hail2u/vim-css3-syntax'
 Plugin 'groenewege/vim-less'
+Plugin 'phpvim/phpcd.vim', { 'for': 'php' , 'do': 'composer update' }
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -81,11 +82,12 @@ autocmd filetype html,xml set listchars-=tab:>.
 "autocmd FileType html,xhtml,xml,htmldjango,jinjahtml,eruby,mako source ~/.vim/bundle/closetag/plugin/closetag.vim
 
 " Set the php doc block config
-" let g:pdv_cfg_Package = 
+" let g:pdv_cfg_Package =
 " Map php doc block
 "inoremap <C-B> <ESC>:call PhpDocSingle()<CR>i
 "nnoremap <C-B> :call PhpDocSingle()<CR>
-"vnoremap <C-B> :call PhpDocRange()<CR> 
+"vnoremap <C-B> :call PhpDocRange()<CR>
+autocmd FileType php setlocal omnifunc=phpcd#CompletePHP
 
 " easy php lint
 :autocmd FileType php noremap <C-Y> :w!<CR>:!php %<CR>
