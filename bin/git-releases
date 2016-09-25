@@ -1,0 +1,171 @@
+#!/usr/bin/env bash
+
+# semantic version number validation regex
+REGEX='^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?$'
+
+###
+# Returns the latest version number.
+#
+# @return string The latest version number.
+##
+function get_latest()
+{
+    LATEST=$(get_tags | filter_build | sort -uV | tail -1)
+
+    if [ '' = "$LATEST" ]; then
+        return 1
+    else
+        echo "$LATEST"
+    fi
+}
+
+###
+# Returns the next major version number.
+#
+# @return string The next major version number.
+##
+function get_next_major()
+{
+    local VERSION=$(get_latest | cut -d- -f1)
+    local MAJOR=$(echo "$VERSION" | cut -d. -f1)
+
+    ((MAJOR++))
+
+    echo "$MAJOR.0.0"
+}
+
+###
+# Returns the next minor version number.
+#
+# @return string The next minor version number.
+##
+function get_next_minor()
+{
+    local VERSION=$(get_latest | cut -d- -f1)
+    local MAJOR=$(echo "$VERSION" | cut -d. -f1)
+    local MINOR=$(echo "$VERSION" | cut -d. -f2)
+
+    ((MINOR++))
+
+    echo "$MAJOR.$MINOR.0"
+}
+
+###
+# Returns the next patch version number.
+#
+# @return string The next patch version number.
+##
+function get_next_patch()
+{
+    local VERSION=$(get_latest | cut -d- -f1)
+    local MAJOR=$(echo "$VERSION" | cut -d. -f1)
+    local MINOR=$(echo "$VERSION" | cut -d. -f2)
+    local PATCH=$(echo "$VERSION" | cut -d. -f3)
+
+    ((PATCH++))
+
+    echo "$MAJOR.$MINOR.$PATCH"
+}
+
+###
+# Returns a list of tags that are valid semantic version numbers.
+#
+# @return string The list of tagged semantic version numbers.
+##
+function get_tags()
+{
+    git tag | grep -P "$REGEX"
+}
+
+###
+# Returns a list of version number without the build metadata.
+#
+# @param string VERSIONS The list of version numbers to filter.
+#
+# @return string The filtered version numbers.
+##
+function filter_build()
+{
+    if [ '' = "$1" ]; then
+        local LINE=
+
+        while read -t 0.5 LINE; do
+            echo "$LINE" | cut -d+ -f1
+        done
+    else
+        echo "$1" | cut -d+ -f1
+    fi
+}
+
+###
+# Sets a tag for the current repository.
+#
+# @param string VERSION The new version tag.
+##
+function set_tag()
+{
+    local ANSWER=
+    local CURRENT=$(get_latest)
+    local NEXT="$1"
+
+    echo "Current: $CURRENT"
+    echo "   Next: $NEXT"
+    echo
+
+    while [ 'y' != "$ANSWER" ] && [ 'n' != "$ANSWER" ]; do
+        read -p "Add new version? [Y/n] " ANSWER
+
+        if [ '' = "$ANSWER" ]; then
+            ANSWER=y
+        fi
+    done
+
+    if [ 'y' = "$ANSWER" ]; then
+        git tag "$NEXT"
+        
+        echo
+        echo "Version added."
+    else
+        echo "Aborted."
+    fi
+}
+
+###
+# Displays the usage help screen.
+##
+function usage()
+{
+    echo "Usage: git version [OPTION]
+Simple handling of semantic version number.
+
+OPTION
+
+    --latest    Displays the latest version.
+    --list      Lists all of the versions.
+    --major     Increments to the next major version number.
+    --minor     Increments to the next minor version number.
+    --patch     Increments to the next patch version number.
+"
+}
+
+# handle user
+case "$1" in
+    --latest)
+        get_latest
+        ;;
+    --list)
+        get_tags | filter_build | sort -u
+        ;;
+    --major)
+        set_tag $(get_next_major)
+        ;;
+    --minor)
+        set_tag $(get_next_minor)
+        ;;
+    --patch)
+        set_tag $(get_next_patch)
+        ;;
+    *)
+        usage
+        ;;
+esac
