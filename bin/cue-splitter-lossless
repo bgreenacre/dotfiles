@@ -1,0 +1,3 @@
+#!/bin/bash
+
+shnsplit -f *.cue -t %n-%t -o flac *.flac && cuetag *.cue [0-9]*.flac && metaflac --add-replay-gain [0-9]*.flac

@@ -1,5 +1,7 @@
 # add paths to home folder
-export PATH=$PATH:~/bin:/opt/vagrant/bin
+export PATH=$PATH:$HOME/bin:/opt/vagrant/bin
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+export PATH="$PATH:$HOME/.rvm/bin"
 export NSS_SSL_CBC_RANDOM_IV=0
 
 if [ -d ~/packer ]; then
@@ -10,13 +12,7 @@ if [ -d $HOME/.composer/vendor/bin ]; then
     export PATH=$PATH:$HOME/.composer/vendor/bin
 fi
 
-SITE_ENV=development
-KOHANA_ENV=$SITE_ENV
-
-#alias composer='php ~/bin/composer.phar'
-
 alias android-connect="mtpfs -o allow_other /media/GalaxyNexus"
 alias android-disconnect="fusermount -u /media/GalaxyNexus"
 alias pidgin="export NSS_SSL_CBC_RANDOM_IV=0; /usr/bin/pidgin"
 
-#export VAGRANT_HOME="/media/disc/vagrant.d"
