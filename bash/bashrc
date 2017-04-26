@@ -1,7 +1,13 @@
 # add paths to home folder
 export PATH=$PATH:$HOME/bin:/opt/vagrant/bin
+
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
 export PATH="$PATH:$HOME/.rvm/bin"
+
+if [ -f ~/.rvm/scripts/rvm ]; then
+    source ~/.rvm/scripts/rvm
+fi
+
 export NSS_SSL_CBC_RANDOM_IV=0
 
 if [ -d ~/packer ]; then
