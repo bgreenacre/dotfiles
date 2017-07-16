@@ -1,0 +1,9 @@
+#!/bin/bash
+
+for branch in $(git branch --merged develop | egrep -v "(^\*|master|dev)")
+do
+    git push --delete origin "$branch"
+    git branch -D "$branch"
+done
+
+git remote prune origin
