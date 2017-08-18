@@ -35,7 +35,7 @@ Plug 'mhinz/vim-sayonara'
 Plug 'itmammoth/doorboy.vim'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'chrisbra/NrrwRgn'
-
+" Plug 'joonty/vdebug'
 call plug#end()
 
 " Vim Settings
@@ -97,8 +97,10 @@ let g:onedark_terminal_italics=1
 colorscheme onedark
 
 " exit insert, dd line, enter insert
-inoremap <c-d> <esc>ddi
-inoremap <c-z> <esc>ui
+inoremap <C-x> <esc>ddi
+inoremap <C-c> <esc>yyi
+inoremap <C-z> <esc>ui
+inoremap <C-/> :TComment<cr>
 
 " Make editing sudo required files easier
 cmap w!! w !sudo tee % >/dev/null
@@ -211,7 +213,7 @@ command! -nargs=1 PlaceholderImgTag call s:PlaceholderImgTag(<f-args>)
       nmap <silent> m :call NerdUnite()<cr>
       nmap <silent> r <Plug>(vimfiler_redraw_screen)
   endf
-  " let g:vimfiler_ignore_pattern = '^\%(\.git\|\.DS_Store\)$'
+  let g:vimfiler_ignore_pattern = '^\%(\.git\|\.DS_Store\)$'
   let g:webdevicons_enable_vimfiler = 0
   let g:vimfiler_no_default_key_mappings=1
   function! NerdUnite() abort "{{{
@@ -242,6 +244,14 @@ command! -nargs=1 PlaceholderImgTag call s:PlaceholderImgTag(<f-args>)
   let g:NERDTreeDirArrowCollapsible = ''
   let g:WebDevIconsUnicodeDecorateFolderNodesDefaultSymbol = ''
 
+"" Buffer Navigation
+" Toggle left sidebar: NERDTree and BufferGator
+  fu! UiToggle()
+    execute ":NERDTreeToggle"
+    execute ":bd!"
+    execute ":set number!"
+  endf
+  map  <silent> <Leader>w  <esc>:call UiToggle()<cr>
 "}}}
 
 " Nvim terminal -------------------------------------------------------------{{{
