@@ -117,6 +117,19 @@ map <C-L> <C-W>l
 map <C-E> <C-W>=
 map <C-B> <C-W><bar>
 
+" Navigate between display lines
+noremap  <silent> <Up>   gk
+noremap  <silent> <Down> gj
+noremap  <silent> k gk
+noremap  <silent> j gj
+noremap  <silent> <Home> g<Home>
+noremap  <silent> <End>  g<End>
+inoremap <silent> <Home> <C-o>g<Home>
+inoremap <silent> <End>  <C-o>g<End>
+noremap H ^
+noremap L g_
+noremap J 5j
+noremap K 5k
 " Copy to clipboard
 vnoremap <C-c> "*y<CR>
 
@@ -247,8 +260,10 @@ command! -nargs=1 PlaceholderImgTag call s:PlaceholderImgTag(<f-args>)
 "" Buffer Navigation
 " Toggle left sidebar: NERDTree and BufferGator
   fu! UiToggle()
-    execute ":NERDTreeToggle"
-    execute ":bd!"
+    " let b = bufnr("%")
+    " echo bufwinnr(b)
+    execute "NERDTreeClose"
+    execute ":bd"
     execute ":set number!"
   endf
   map  <silent> <Leader>w  <esc>:call UiToggle()<cr>
