@@ -5,3 +5,4 @@
 	default = matching
 [core]
 	autocrlf = input
+	editor = vim
