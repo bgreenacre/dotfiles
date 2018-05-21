@@ -1,3 +1,0 @@
-#!/bin/bash
-
-java -Dsun.java3d.opengl=true -Xmx1024M -Xms512M -jar ~/bin/Minecraft.jar
