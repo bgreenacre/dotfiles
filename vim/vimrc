@@ -30,6 +30,8 @@ Plugin 'ryanoasis/vim-devicons'
 Plugin 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plugin 'Shougo/vimfiler.vim'
 Plugin 'Shougo/unite.vim'
+Plugin 'terryma/vim-multiple-cursors'
+Plugin 'w0rp/ale'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -91,8 +93,33 @@ no <C-b> <C-W><bar>
 map <C-P> :set paste<Return>
 map <C-A> :set nopaste<Return>
 
+" Navigate between display lines
+noremap  <silent> <Up>   gk
+noremap  <silent> <Down> gj
+noremap  <silent> k gk
+noremap  <silent> j gj
+noremap  <silent> <Home> g<Home>
+noremap  <silent> <End>  g<End>
+inoremap <silent> <Home> <C-o>g<Home>
+inoremap <silent> <End>  <C-o>g<End>
+noremap H ^
+noremap L g_
+noremap J 5j
+noremap K 5k
+
 " Copy to clipboard
 vnoremap <C-c> "*y<CR>
+
+" Align blocks of text and keep them selected
+vmap < <gv
+vmap > >gv
+nnoremap <leader>d "_d
+vnoremap <leader>d "_d
+
+" Multicursor settings
+let g:multi_cursor_next_key='<C-n>'
+let g:multi_cursor_prev_key='<C-p>'
+let g:multi_cursor_skip_key='<C-x>'
 
 " Show evil tabs
 set list
