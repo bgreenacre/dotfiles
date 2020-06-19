@@ -11,14 +11,25 @@ call vundle#begin()
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
 
+Plugin 'LucHermitte/lh-vim-lib'
+Plugin 'LucHermitte/local_vimrc'
 Plugin 'tpope/vim-fugitive'
 Plugin 'scrooloose/nerdtree'
+Plugin 'Xuyuanp/nerdtree-git-plugin'
 Plugin 'wincent/command-t'
 Plugin 'vim-scripts/php.vim--Garvin'
 Plugin 'hail2u/vim-css3-syntax'
 Plugin 'groenewege/vim-less'
 Plugin 'phpvim/phpcd.vim', { 'for': 'php' , 'do': 'composer update' }
 Plugin 'dracula/vim', { 'name': 'dracula' }
+Plugin 'sheerun/vim-polyglot'
+Plugin 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plugin 'junegunn/fzf.vim'
+Plugin 'https://tpope.io/vim/surround.git'
+Plugin 'ryanoasis/vim-devicons'
+Plugin 'tiagofumo/vim-nerdtree-syntax-highlight'
+Plugin 'Shougo/vimfiler.vim'
+Plugin 'Shougo/unite.vim'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -30,10 +41,10 @@ let mapleader=","
 
 " set some defaults
 set hidden
+set encoding=UTF-8
 set termencoding=utf-8
 set backspace=indent,eol,start
 set fileencodings=ucs-bom,utf-8,default,latin1
-set guifont=Droid\ Sans\ Mono\ 10
 set fileformats=unix,dos
 set history=2000
 set undolevels=2000
@@ -63,20 +74,25 @@ set incsearch
 set wmw=0
 set wmh=0
 set pastetoggle=<F2>
-"colors desert
+set shell=/bin/bash
 nnoremap ; :
 
+autocmd Filetype javascript,html setlocal ts=2 sw=2 sts=2 expandtab
+
 " Easy window navigation
-map <C-J> <C-W>j<C-W>_
-map <C-K> <C-W>k<C-W>_
-map <C-H> <C-W>h
-map <C-L> <C-W>l
-map <C-E> <C-W>=
-map <C-B> <C-W><bar>
+no <C-j> <C-W>j<C-W>_
+no <C-k> <C-W>k<C-W>_
+no <C-h> <C-W>h
+no <C-l> <C-W>l
+no <C-e> <C-W>=
+no <C-b> <C-W><bar>
 
 " easy pasting
 map <C-P> :set paste<Return>
 map <C-A> :set nopaste<Return>
+
+" Copy to clipboard
+vnoremap <C-c> "*y<CR>
 
 " Show evil tabs
 set list
@@ -86,6 +102,14 @@ autocmd filetype html,xml set listchars-=tab:>.
 " Make editing sudo required files easier
 cmap w!! w !sudo tee % >/dev/null
 
+
+if has("autocmd") && exists("+omnifunc")
+    autocmd Filetype *
+        \	if &omnifunc == "" |
+        \		setlocal omnifunc=syntaxcomplete#Complete |
+        \	endif
+endif
+
 " Set status line to include git branch
 set statusline=%f\ %{fugitive#statusline()}%r%m%=%c,%l/%L\ %P
 
@@ -93,3 +117,82 @@ set statusline=%f\ %{fugitive#statusline()}%r%m%=%c,%l/%L\ %P
 set backupdir=~/.backup/vim/,./.backup/vim,.,/tmp
 set directory=~/.backup/swap/,.,./.backup/swap,/tmp
 set autoread
+
+" Automaticaly open NERDTree if no file is specified
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+
+" If more than one window and previous buffer was NERDTree, go back to it.
+autocmd BufEnter * if bufname('#') =~# "^NERD_tree_" && winnr('$') > 1 | b# | endif
+
+let g:vimfiler_ignore_pattern = ""
+" map <silent> - :VimFiler<CR>
+let g:vimfiler_tree_leaf_icon = ''
+let g:vimfiler_tree_opened_icon = ''
+let g:vimfiler_tree_closed_icon = ''
+let g:vimfiler_file_icon = ''
+let g:vimfiler_marked_file_icon = '*'
+let g:vimfiler_expand_jump_to_first_child = 0
+" let g:vimfiler_as_default_explorer = 1
+call unite#custom#profile('default', 'context', {
+            \'direction': 'botright',
+            \ })
+call vimfiler#custom#profile('default', 'context', {
+            \ 'explorer' : 1,
+            \ 'winwidth' : 35,
+            \ 'winminwidth' : 35,
+            \ 'toggle' : 1,
+            \ 'auto_expand': 0,
+            \ 'parent': 1,
+            \ 'explorer_columns': 'devicons:git',
+            \ 'status' : 0,
+            \ 'safe' : 0,
+            \ 'split' : 1,
+            \ 'hidden': 1,
+            \ 'no_quit' : 1,
+            \ 'force_hide' : 0,
+            \ })
+augroup vfinit
+autocmd FileType vimfiler call s:vimfilerinit()
+augroup END
+function! s:vimfilerinit()
+    set nonumber
+    set norelativenumber
+    nmap <silent><buffer><expr> <CR> vimfiler#smart_cursor_map(
+          \ "\<Plug>(vimfiler_expand_tree)",
+          \ "\<Plug>(vimfiler_edit_file)"
+          \)
+    nmap <silent> m :call NerdUnite()<cr>
+    nmap <silent> r <Plug>(vimfiler_redraw_screen)
+endf
+let g:vimfiler_ignore_pattern = '^\%(\.git\|\.DS_Store\)$'
+let g:webdevicons_enable_vimfiler = 0
+let g:vimfiler_no_default_key_mappings=1
+function! NerdUnite() abort "{{{
+  let marked_files =  vimfiler#get_file(b:vimfiler)
+  call unite#start(['nerd'], {'file': marked_files})
+endfunction "}}}
+map <C-t> :NERDTreeToggle<CR>
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+augroup ntinit
+autocmd FileType nerdtree call s:nerdtreeinit()
+augroup END
+function! s:nerdtreeinit()
+    nunmap <buffer> K
+    nunmap <buffer> J
+endf
+let NERDTreeShowHidden=1
+let NERDTreeHijackNetrw=0
+let g:WebDevIconsUnicodeDecorateFolderNodes = 1
+let g:NERDTreeWinSize=45
+let g:NERDTreeAutoDeleteBuffer=1
+let NERDTreeMinimalUI=1
+let NERDTreeCascadeSingleChildDir=1
+let g:NERDTreeHeader = 'hello'
+let g:NERDTreeShowIgnoredStatus = 0
+
+let g:NERDTreeDirArrowExpandable = ''
+let g:NERDTreeDirArrowCollapsible = ''
+let g:WebDevIconsUnicodeDecorateFolderNodesDefaultSymbol = ''
+
