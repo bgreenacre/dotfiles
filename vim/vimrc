@@ -14,6 +14,7 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'LucHermitte/lh-vim-lib'
 Plugin 'LucHermitte/local_vimrc'
 Plugin 'tpope/vim-fugitive'
+Plugin 'tpope/vim-repeat'
 Plugin 'scrooloose/nerdtree'
 Plugin 'Xuyuanp/nerdtree-git-plugin'
 Plugin 'wincent/command-t'
@@ -32,6 +33,8 @@ Plugin 'Shougo/vimfiler.vim'
 Plugin 'Shougo/unite.vim'
 Plugin 'terryma/vim-multiple-cursors'
 Plugin 'w0rp/ale'
+Plugin 'svermeulen/vim-easyclip'
+Plugin 'styled-components/vim-styled-components'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -222,4 +225,8 @@ let g:NERDTreeShowIgnoredStatus = 0
 let g:NERDTreeDirArrowExpandable = ''
 let g:NERDTreeDirArrowCollapsible = ''
 let g:WebDevIconsUnicodeDecorateFolderNodesDefaultSymbol = ''
+
+" Sync syntax highlight for js files
+autocmd BufEnter *.{js,jsx,ts,tsx} :syntax sync fromstart
+autocmd BufLeave *.{js,jsx,ts,tsx} :syntax sync clear
 
