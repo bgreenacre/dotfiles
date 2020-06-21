@@ -38,7 +38,6 @@ set hlsearch
 set incsearch
 set wmw=0
 set wmh=0
-set pastetoggle=<F2>
 set shell=/bin/bash
 set signcolumn=yes
 setlocal spelllang=en_us
@@ -75,6 +74,12 @@ Plugin 'w0rp/ale'
 Plugin 'svermeulen/vim-easyclip'
 Plugin 'styled-components/vim-styled-components'
 Plugin 'airblade/vim-gitgutter'
+Plugin 'tpope/vim-markdown'
+Plugin 'dyng/ctrlsf.vim'
+Plugin 'editorconfig/editorconfig-vim'
+Plugin 'moll/vim-node'
+Plugin 'xolox/vim-misc'
+Plugin 'xolox/vim-shell'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -158,6 +163,7 @@ no <C-h> <C-W>h
 no <C-l> <C-W>l
 no <C-e> <C-W>=
 no <C-b> <C-W><bar>
+no <C-d> <end>
 
 " easy pasting
 map <C-P> :set paste<Return>
@@ -177,6 +183,13 @@ noremap L g_
 noremap J 5j
 noremap K 5k
 
+" Allow cursor movements during insert mode
+inoremap <C-h> <C-o>h
+inoremap <C-j> <C-o>j
+inoremap <C-k> <C-o>k
+inoremap <C-l> <C-o>l
+inoremap <C-d> <end>
+
 " Copy to clipboard
 vnoremap <C-c> "*y<CR>
 
@@ -185,6 +198,9 @@ vmap < <gv
 vmap > >gv
 nnoremap <leader>d "_d
 vnoremap <leader>d "_d
+
+" quick vertical split
+noremap <leader>v :vsp<CR><C-w><C-w>
 
 " Multicursor settings
 let g:multi_cursor_next_key='<C-n>'
@@ -283,6 +299,8 @@ let g:WebDevIconsUnicodeDecorateFolderNodesDefaultSymbol = ''
 autocmd BufEnter *.{js,jsx,ts,tsx} :syntax sync fromstart
 autocmd BufLeave *.{js,jsx,ts,tsx} :syntax sync clear
 
+" Substitute the word under the cursor.
+nmap <leader>s :%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>
 
 if has("macunix")
   let g:ctrlsf_ackprg = '/usr/local/bin/rg'
@@ -296,6 +314,14 @@ let g:ctrlsf_confirm_save = 0
 let g:ctrlsf_auto_focus = {
     \ 'at': 'start',
     \ }
+
+nmap <leader>a :CtrlSF -R ""<Left>
+nmap <leader>A <Plug>CtrlSFCwordPath -W<CR>
+nmap <leader>c :CtrlSFFocus<CR>
+nmap <leader>C :CtrlSFToggle<CR>
+
+" Open Ggrep results in a quickfix window
+autocmd QuickFixCmdPost *grep* cwindow
 
 " Fix Vim's ridiculous line wrapping model
 set ww=<,>,[,],h,l
