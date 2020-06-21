@@ -80,6 +80,7 @@ Plugin 'editorconfig/editorconfig-vim'
 Plugin 'moll/vim-node'
 Plugin 'xolox/vim-misc'
 Plugin 'xolox/vim-shell'
+Plugin 'pechorin/any-jump.vim'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
