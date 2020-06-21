@@ -1,50 +1,10 @@
+" Use Vim settings, rather then Vi settings (much better!).
+" This must be first, because it changes other options as a side effect.
 set nocompatible              " be iMproved, required
 filetype off                  " required
 
-" enable matchit plugin which ships with vim and greatly enhances '%'
-runtime macros/matchit.vim
-
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundles/Vundle.vim
-call vundle#begin()
-
-" let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
-
-Plugin 'LucHermitte/lh-vim-lib'
-Plugin 'LucHermitte/local_vimrc'
-Plugin 'tpope/vim-fugitive'
-Plugin 'tpope/vim-repeat'
-Plugin 'scrooloose/nerdtree'
-Plugin 'Xuyuanp/nerdtree-git-plugin'
-Plugin 'wincent/command-t'
-Plugin 'vim-scripts/php.vim--Garvin'
-Plugin 'hail2u/vim-css3-syntax'
-Plugin 'groenewege/vim-less'
-Plugin 'phpvim/phpcd.vim', { 'for': 'php' , 'do': 'composer update' }
-Plugin 'dracula/vim', { 'name': 'dracula' }
-Plugin 'sheerun/vim-polyglot'
-Plugin 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plugin 'junegunn/fzf.vim'
-Plugin 'https://tpope.io/vim/surround.git'
-Plugin 'ryanoasis/vim-devicons'
-Plugin 'tiagofumo/vim-nerdtree-syntax-highlight'
-Plugin 'Shougo/vimfiler.vim'
-Plugin 'Shougo/unite.vim'
-Plugin 'terryma/vim-multiple-cursors'
-Plugin 'w0rp/ale'
-Plugin 'svermeulen/vim-easyclip'
-Plugin 'styled-components/vim-styled-components'
-
-" All of your Plugins must be added before the following line
-call vundle#end()            " required
-colorscheme dracula
-filetype plugin indent on    " required
-
-" change the mapleader from \ to ,
-let mapleader=","
-
-" set some defaults
+" Set some global vim defaults
+syntax enable
 set hidden
 set encoding=UTF-8
 set termencoding=utf-8
@@ -60,12 +20,12 @@ set number
 set mouse=a
 set noerrorbells
 set visualbell
-"set nobackup
-"set noswapfile
+set nobackup
+set noswapfile
+set nowritebackup
 set showmatch
 set laststatus=2
 set nowrap
-syntax on
 set autoindent
 set copyindent
 "set smartindent
@@ -80,7 +40,114 @@ set wmw=0
 set wmh=0
 set pastetoggle=<F2>
 set shell=/bin/bash
+set signcolumn=yes
+setlocal spelllang=en_us
 nnoremap ; :
+
+" enable matchit plugin which ships with vim and greatly enhances '%'
+runtime macros/matchit.vim
+
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundles/Vundle.vim
+call vundle#begin('~/.vim/bundles')
+
+" let Vundle manage Vundle, required
+Plugin 'VundleVim/Vundle.vim'
+
+Plugin 'tpope/vim-fugitive'
+Plugin 'tpope/vim-repeat'
+Plugin 'scrooloose/nerdtree'
+Plugin 'Xuyuanp/nerdtree-git-plugin'
+Plugin 'wincent/command-t'
+Plugin 'vim-scripts/php.vim--Garvin'
+"Plugin 'phpvim/phpcd.vim', { 'for': 'php' , 'do': 'composer update' }
+Plugin 'dracula/vim', { 'name': 'dracula' }
+Plugin 'sheerun/vim-polyglot'
+Plugin 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plugin 'junegunn/fzf.vim'
+Plugin 'tpope/vim-surround'
+Plugin 'ryanoasis/vim-devicons'
+Plugin 'tiagofumo/vim-nerdtree-syntax-highlight'
+Plugin 'Shougo/vimfiler.vim'
+Plugin 'Shougo/unite.vim'
+Plugin 'terryma/vim-multiple-cursors'
+Plugin 'w0rp/ale'
+Plugin 'svermeulen/vim-easyclip'
+Plugin 'styled-components/vim-styled-components'
+Plugin 'airblade/vim-gitgutter'
+
+" All of your Plugins must be added before the following line
+call vundle#end()            " required
+filetype plugin indent on    " required
+
+" Color scheme
+colorscheme dracula
+
+" http://damien.lespiau.name/blog/2009/03/18/per-project-vimrc/comment-page-1/
+set exrc " enable per-directory .vimrc files
+set secure " disable unsafe commands in local .vimrc files
+
+" Force some file types to be other file types
+au BufRead,BufNewFile *.ejs,*.mustache setfiletype html
+au BufRead,BufNewFile *.json setfiletype json
+au BufRead,BufNewFile *.json.* setfiletype json
+
+" http://www.reddit.com/r/vim/comments/2x5yav/markdown_with_fenced_code_blocks_is_great/
+au BufNewFile,BufReadPost *.md set filetype=markdown
+let g:markdown_fenced_languages = ['css', 'erb=eruby', 'javascript', 'js=javascript', 'json=javascript', 'ruby', 'sass', 'xml', 'html']
+
+set wildignore+=**/bower_components/**,**/node_modules/**,**/dist/**,**/bin/**,**/tmp/**
+
+let g:ctrlp_working_path_mode = 0
+let g:ctrlp_by_filename = 0
+let g:ctrlp_regexp_search = 0
+let g:ctrlp_use_caching = 1
+
+" https://github.com/xolox/vim-shell#the-gshell_fullscreen_items-option
+let g:shell_fullscreen_items = "mT"
+let g:shell_fullscreen_always_on_top = 0
+
+if has("macunix") || has('win32')
+  set clipboard=unnamed
+elseif has("unix")
+  set clipboard=unnamedplus
+endif
+
+" Enable file type detection.
+" Also load indent files, to automatically do language-dependent indenting.
+filetype plugin indent on
+
+" change the mapleader from \ to ,
+let mapleader=","
+
+nmap <leader>E :Error<CR><C-w>j
+
+" Requires ripgrep
+" https://github.com/BurntSushi/ripgrep
+let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --glob "!.git/*"'
+
+if has('win32')
+  " Disable preview on Windows since it doesn't really work
+  let g:fzf_preview_window = ''
+else
+  command! -bang -nargs=? -complete=dir Files
+    \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
+endif
+
+
+nmap // :BLines!<CR>
+nmap ?? :Rg!<CR>
+
+" https://github.com/junegunn/fzf.vim/issues/162
+let g:fzf_commands_expect = 'enter'
+
+" Find files with fzf
+nmap <leader>p :Files!<CR>
+
+" Shows Git history for the current buffer
+command! FileHistory execute ":BCommits!"
+
+nmap cc :Commands<CR>
 
 autocmd Filetype javascript,html setlocal ts=2 sw=2 sts=2 expandtab
 
@@ -132,20 +199,8 @@ autocmd filetype html,xml set listchars-=tab:>.
 " Make editing sudo required files easier
 cmap w!! w !sudo tee % >/dev/null
 
-
-if has("autocmd") && exists("+omnifunc")
-    autocmd Filetype *
-        \	if &omnifunc == "" |
-        \		setlocal omnifunc=syntaxcomplete#Complete |
-        \	endif
-endif
-
 " Set status line to include git branch
 set statusline=%f\ %{fugitive#statusline()}%r%m%=%c,%l/%L\ %P
-
-" Swap and backup locations
-set backupdir=~/.backup/vim/,./.backup/vim,.,/tmp
-set directory=~/.backup/swap/,.,./.backup/swap,/tmp
 set autoread
 
 " Automaticaly open NERDTree if no file is specified
@@ -203,8 +258,6 @@ function! NerdUnite() abort "{{{
   call unite#start(['nerd'], {'file': marked_files})
 endfunction "}}}
 map <C-t> :NERDTreeToggle<CR>
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 augroup ntinit
 autocmd FileType nerdtree call s:nerdtreeinit()
 augroup END
@@ -213,7 +266,7 @@ function! s:nerdtreeinit()
     nunmap <buffer> J
 endf
 let NERDTreeShowHidden=1
-let NERDTreeHijackNetrw=0
+let NERDTreeHijackNetrw=1
 let g:WebDevIconsUnicodeDecorateFolderNodes = 1
 let g:NERDTreeWinSize=45
 let g:NERDTreeAutoDeleteBuffer=1
@@ -230,3 +283,39 @@ let g:WebDevIconsUnicodeDecorateFolderNodesDefaultSymbol = ''
 autocmd BufEnter *.{js,jsx,ts,tsx} :syntax sync fromstart
 autocmd BufLeave *.{js,jsx,ts,tsx} :syntax sync clear
 
+
+if has("macunix")
+  let g:ctrlsf_ackprg = '/usr/local/bin/rg'
+elseif has("unix")
+  let g:ctrlsf_ackprg = '/usr/bin/rg'
+endif
+
+let g:ctrlsf_winsize = '33%'
+let g:ctrlsf_auto_close = 0
+let g:ctrlsf_confirm_save = 0
+let g:ctrlsf_auto_focus = {
+    \ 'at': 'start',
+    \ }
+
+" Fix Vim's ridiculous line wrapping model
+set ww=<,>,[,],h,l
+
+if has('win32')
+  nmap <leader>t :tab term<CR>
+else
+  nmap <leader>t :tab term<CR>source $HOME/.bash_profile<CR>clear<CR>
+endif
+
+let g:ale_linters = {
+\   'javascript': ['eslint'],
+\}
+
+
+nmap <silent> <C-n> <Plug>(ale_previous_wrap)
+nmap <silent> <C-m> <Plug>(ale_next_wrap)
+
+autocmd BufEnter dist/* ALEDisableBuffer
+
+" Resize splits in all tabs upon window resize
+" https://vi.stackexchange.com/a/206
+autocmd VimResized * Tabdo wincmd =
