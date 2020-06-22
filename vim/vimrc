@@ -1,158 +1,218 @@
-" Use Vim settings, rather then Vi settings (much better!).
-" This must be first, because it changes other options as a side effect.
-set nocompatible              " be iMproved, required
-filetype off                  " required
+set nocompatible
+" vim-plug {{{
+" Automatically install vim-plug and run PlugInstall if vim-plug not found
+" see https://github.com/junegunn/vim-plug/wiki/faq#automatic-installation
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
 
-" Set some global vim defaults
-syntax enable
-set hidden
-set encoding=UTF-8
-set termencoding=utf-8
-set backspace=indent,eol,start
-set fileencodings=ucs-bom,utf-8,default,latin1
-set fileformats=unix,dos
-set history=2000
-set undolevels=2000
-set wildignore=*.swp,*.bak,*.pyc,*.class
-set title
-set ruler
-set number
+call plug#begin('~/.vim/plugged')
+
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-repeat'
+Plug 'scrooloose/nerdtree'
+Plug 'wincent/command-t'
+Plug 'dracula/vim', { 'as': 'dracula' }
+Plug 'sheerun/vim-polyglot'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+Plug 'tpope/vim-surround'
+Plug 'terryma/vim-multiple-cursors'
+Plug 'w0rp/ale'
+Plug 'styled-components/vim-styled-components'
+Plug 'airblade/vim-gitgutter'
+Plug 'tpope/vim-markdown'
+Plug 'dyng/ctrlsf.vim'
+Plug 'editorconfig/editorconfig-vim'
+Plug 'moll/vim-node'
+Plug 'xolox/vim-misc'
+Plug 'xolox/vim-shell'
+
+call plug#end()
+" }}}
+
+" Just a simple function to check if a plugin is loaded by vim-plug
+function! PlugLoaded(name)
+    return (
+        \ has_key(g:plugs, a:name) &&
+        \ isdirectory(g:plugs[a:name].dir) &&
+        \ stridx(&rtp, g:plugs[a:name].dir) >= 0)
+endfunction
+
+" Theming {{{
+
+" Color scheme
+if filereadable(expand('~/.vim/plugged/dracula/autoload/dracula.vim'))
+    colorscheme dracula
+endif
+
+if filereadable(expand("~/.vimrc_background"))
+    let base16colorspace=256
+    source ~/.vimrc_background
+endif
+" }}}
+
+"
+" Settings {{{
+
+" regular vim only {{{
+if !has('nvim')
+    set hlsearch
+
+    " Enable mouse mode working past 220th column
+    " https://stackoverflow.com/questions/7000960/in-vim-why-doesnt-my-mouse-work-past-the-220th-column
+    if has("mouse_sgr")
+        set ttymouse=sgr
+    else
+        set ttymouse=xterm2
+    end
+endif
+" }}}
+"
+
 set mouse=a
-set noerrorbells
-set visualbell
-set nobackup
-set noswapfile
-set nowritebackup
-set showmatch
-set laststatus=2
-set nowrap
-set autoindent
-set copyindent
-"set smartindent
-set expandtab tabstop=4 shiftwidth=4
-set shiftround
-set smartcase
-set ignorecase
-set smarttab
-set hlsearch
-set incsearch
-set wmw=0
-set wmh=0
-set shell=/bin/bash
-set signcolumn=yes
-setlocal spelllang=en_us
-nnoremap ; :
 
 " enable matchit plugin which ships with vim and greatly enhances '%'
 runtime macros/matchit.vim
 
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundles/Vundle.vim
-call vundle#begin('~/.vim/bundles')
-
-" let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
-
-Plugin 'tpope/vim-fugitive'
-Plugin 'tpope/vim-repeat'
-Plugin 'preservim/nerdtree'
-Plugin 'Xuyuanp/nerdtree-git-plugin'
-Plugin 'wincent/command-t'
-"Plugin 'vim-scripts/php.vim--Garvin'
-"Plugin 'phpvim/phpcd.vim', { 'for': 'php' , 'do': 'composer update' }
-Plugin 'dracula/vim', { 'name': 'dracula' }
-Plugin 'sheerun/vim-polyglot'
-Plugin 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plugin 'junegunn/fzf.vim'
-Plugin 'tpope/vim-surround'
-Plugin 'tiagofumo/vim-nerdtree-syntax-highlight'
-Plugin 'terryma/vim-multiple-cursors'
-Plugin 'w0rp/ale'
-Plugin 'styled-components/vim-styled-components'
-Plugin 'airblade/vim-gitgutter'
-Plugin 'tpope/vim-markdown'
-Plugin 'dyng/ctrlsf.vim'
-Plugin 'editorconfig/editorconfig-vim'
-Plugin 'moll/vim-node'
-Plugin 'xolox/vim-misc'
-Plugin 'xolox/vim-shell'
-"Plugin 'pechorin/any-jump.vim'
-Plugin 'ryanoasis/vim-devicons'
-
-" All of your Plugins must be added before the following line
-call vundle#end()            " required
-filetype plugin indent on    " required
-
-" Color scheme
-colorscheme dracula
-
 " http://damien.lespiau.name/blog/2009/03/18/per-project-vimrc/comment-page-1/
 set exrc " enable per-directory .vimrc files
-set secure " disable unsafe commands in local .vimrc files
 
-" Force some file types to be other file types
-au BufRead,BufNewFile *.ejs,*.mustache setfiletype html
-au BufRead,BufNewFile *.json setfiletype json
-au BufRead,BufNewFile *.json.* setfiletype json
+" Make editing sudo required files easier
+cmap w!! w !sudo tee % >/dev/null
 
-" http://www.reddit.com/r/vim/comments/2x5yav/markdown_with_fenced_code_blocks_is_great/
-au BufNewFile,BufReadPost *.md set filetype=markdown
-let g:markdown_fenced_languages = ['css', 'erb=eruby', 'javascript', 'js=javascript', 'json=javascript', 'ruby', 'sass', 'xml', 'html']
+syntax on
 
-set wildignore+=**/bower_components/**,**/node_modules/**,**/dist/**,**/bin/**,**/tmp/**
+" Show what mode you're currently in
+set showmode
+" Show what commands you're typing
+set showcmd
+" Allow modelines
+set modeline
+" Show current line and column position in file
+set ruler
+" Highlight column at 80
+set colorcolumn=80
+" Show matches
+set showmatch
 
-let g:ctrlp_working_path_mode = 0
-let g:ctrlp_by_filename = 0
-let g:ctrlp_regexp_search = 0
-let g:ctrlp_use_caching = 1
+set scrolloff=5
+" Show file title in terminal tab
+set title
+" Show line numbers
+set number
+" Highlight current line
+set cursorline
+" ignore case when searching...
+set ignorecase
+" ...except if we input a capital letter
+set smartcase
 
-" https://github.com/xolox/vim-shell#the-gshell_fullscreen_items-option
-let g:shell_fullscreen_items = "mT"
-let g:shell_fullscreen_always_on_top = 0
+" hides buffer instead of closing them
+" http://usevim.com/2012/10/19/vim101-set-hidden/
+set hidden
 
+" Tab stuff
+set expandtab tabstop=4 shiftwidth=4
+set smarttab
+set backspace=indent,eol,start
+set autoindent
+set copyindent
+set shiftround
+
+" Show invisible characters
+set list
+set listchars=tab:▸\ ,trail:·,eol:¬,extends:→,precedes:←,nbsp:･
+set showbreak=↪\
+
+" Set split pane direction to be more natural
+set splitbelow
+set splitright
+
+" wildignore
+set wildignore=*.swp,*.bak,*.pyc,*.class,*.so,*.zip,**/bower_components/**,**/node_modules/**,**/dist/**,**/bin/**,**/tmp/**,**/vendor/**
+
+" find - look in nested folders
+set path+=..
+set wildmenu
+
+set foldlevel=5
+
+" Set encoding and file formats
+set encoding=utf-8
+set termencoding=utf-8
+set fileencodings=utf-8,default,latin1
+set fileformats=unix,dos
+
+" Set the swap and backups to disable
+set nobackup
+set noswapfile
+set nowritebackup
+
+" Set history and undo
+set history=2000
+set undolevels=2000
+
+" Set out shell to use bash
+set shell=/bin/bash
+
+" Turn off wrapping
+set nowrap
+
+" Set bells
+set noerrorbells
+set visualbell
+
+" Set local to english
+setlocal spelllang=en_us
+
+" Always show status line
+set laststatus=2
+
+" Show sign column
+set signcolumn=yes
+
+" Clipboard settings
 if has("macunix") || has('win32')
   set clipboard=unnamed
 elseif has("unix")
   set clipboard=unnamedplus
 endif
 
-" Enable file type detection.
-" Also load indent files, to automatically do language-dependent indenting.
-filetype plugin indent on
+" Fix Vim's ridiculous line wrapping model
+set ww=<,>,[,],h,l
 
-" change the mapleader from \ to ,
-let mapleader=","
-
-nmap <leader>E :Error<CR><C-w>j
-
-" Requires ripgrep
-" https://github.com/BurntSushi/ripgrep
-let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --glob "!.git/*"'
-
-if has('win32')
-  " Disable preview on Windows since it doesn't really work
-  let g:fzf_preview_window = ''
-else
-  command! -bang -nargs=? -complete=dir Files
-    \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
+" rg grep {{{
+if executable('rg')
+    set grepprg=rg\ --vimgrep
+    " filename:line number:column number:message
+    set grepformat=%f:%l:%c:%m
 endif
 
+if has("persistent_undo")
+    set undodir=/tmp
+    set undofile
+endif
+"}}}
 
-nmap // :BLines!<CR>
-nmap ?? :Rg!<CR>
+"}}}
 
-" https://github.com/junegunn/fzf.vim/issues/162
-let g:fzf_commands_expect = 'enter'
+" Mappings {{{
+" remap <Leader> key
+let mapleader=","
 
-" Find files with fzf
-nmap <leader>p :Files!<CR>
+" remap : to ; to avoid pressing Shift
+nnoremap ; :
+vnoremap ; :
 
-" Shows Git history for the current buffer
-command! FileHistory execute ":BCommits!"
-
-nmap cc :Commands<CR>
-
-autocmd Filetype javascript,html setlocal ts=2 sw=2 sts=2 expandtab
+" Faster vsplit resizing (+,-)
+" horizontal split resize can still be achieved with <C-W>+, <C-W>-, <C-W> [n] +
+if bufwinnr(1)
+    nnoremap + <C-W>>
+    nnoremap - <C-W><
+endif
 
 " Easy window navigation
 no <C-j> <C-W>j<C-W>_
@@ -188,6 +248,21 @@ inoremap <C-k> <C-o>k
 inoremap <C-l> <C-o>l
 inoremap <C-d> <end>
 
+"Reload buffer
+nnoremap <Leader>e :e!<CR>
+
+" Buffer navigation
+noremap <Leader>] :bnext<CR>
+noremap <Leader>[ :bprev<CR>
+
+" Save and quit buffer
+noremap <Leader>s :write<CR>
+noremap <Leader>q :quit<CR>
+
+" lnext and lprevious
+nnoremap <Leader>j :lnext<CR>
+nnoremap <Leader>k :lprevious<CR
+
 " Copy to clipboard
 vnoremap <C-c> "*y<CR>
 
@@ -200,60 +275,216 @@ vnoremap <leader>d "_d
 " quick vertical split
 noremap <leader>v :vsp<CR><C-w><C-w>
 
-" Multicursor settings
-let g:multi_cursor_next_key='<C-n>'
-let g:multi_cursor_prev_key='<C-p>'
-let g:multi_cursor_skip_key='<C-x>'
+nmap <leader>E :Error<CR><C-w>j
 
-" Show evil tabs
-"set list
-"set listchars=tab:>.,trail:.,extends:#,nbsp:.
-"autocmd filetype html,xml set listchars-=tab:>.
-
-" Make editing sudo required files easier
-cmap w!! w !sudo tee % >/dev/null
-
-" Set status line to include git branch
-set statusline=%f\ %{fugitive#statusline()}%r%m%=%c,%l/%L\ %P
-set autoread
-
-" Automaticaly open NERDTree if no file is specified
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-
-" If more than one window and previous buffer was NERDTree, go back to it.
-autocmd BufEnter * if bufname('#') =~# "^NERD_tree_" && winnr('$') > 1 | b# | endif
-
-autocmd FileType nerdtree setlocal nolist
-
-map <C-t> :NERDTreeToggle<CR>
-let NERDTreeShowHidden=1
-let NERDTreeHijackNetrw=1
-let g:WebDevIconsUnicodeDecorateFolderNodes = 1
-let g:NERDTreeWinSize=45
-let g:NERDTreeAutoDeleteBuffer=1
-let NERDTreeMinimalUI=1
-let NERDTreeCascadeSingleChildDir=1
-let g:NERDTreeHeader = 'hello'
-let g:NERDTreeShowIgnoredStatus = 0
-
-let g:NERDTreeDirArrowExpandable = ''
-let g:NERDTreeDirArrowCollapsible = ''
-let g:WebDevIconsUnicodeDecorateFolderNodesDefaultSymbol = ''
-
-" Sync syntax highlight for js files
-autocmd BufEnter *.{js,jsx,ts,tsx} :syntax sync fromstart
-autocmd BufLeave *.{js,jsx,ts,tsx} :syntax sync clear
+" Show commands menu easier
+nmap cc :Commands<CR>
 
 " Substitute the word under the cursor.
 nmap <leader>s :%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>
 
+if has('win32')
+  nmap <leader>t :tab term<CR>
+else
+  nmap <leader>t :tab term<CR>source $HOME/.bash_profile<CR>clear<CR>
+endif
+" }}}
+
+" Filetype settings {{{
+" Enable file type detection.
+" Also load indent files, to automatically do language-dependent indenting.
+filetype plugin indent on
+
+autocmd Filetype javascript,html setlocal ts=2 sw=2 sts=2 expandtab
+
+" Force some file types to be other file types
+au BufRead,BufNewFile *.ejs,*.mustache setfiletype html
+au BufRead,BufNewFile *.json setfiletype json
+au BufRead,BufNewFile *.json.* setfiletype json
+au BufNewFile,BufReadPost *.md set filetype=markdown
+
+" Sync syntax highlight for js files
+autocmd BufEnter *.{js,jsx,ts,tsx} :syntax sync fromstart
+autocmd BufLeave *.{js,jsx,ts,tsx} :syntax sync clear
+" }}}
+
+" Plugins Settings {{{
+" vim-gitgutter {{{
+let g:gitgutter_max_signs = 1000
+" }}}
+
+" vim-markdown {{{
+" Disable Markdown syntax concealing
+" https://github.com/plasticboy/vim-markdown#syntax-concealing
+let g:vim_markdown_conceal = 0
+let g:vim_markdown_conceal_code_blocks = 0
+" http://www.reddit.com/r/vim/comments/2x5yav/markdown_with_fenced_code_blocks_is_great/
+let g:markdown_fenced_languages = ['css', 'erb=eruby', 'javascript', 'js=javascript', 'json=javascript', 'ruby', 'sass', 'xml', 'html']
+" }}}
+
+" fzf {{{
+" :Rg
+" Create a :Rg command with ripgrep and fzf
+" see https://medium.com/@crashybang/supercharge-vim-with-fzf-and-ripgrep-d4661fc853d2#.h8394n3c5
+
+"" --column: Show column number
+" --line-number: Show line number
+" --no-heading: Do not show file headings in results
+" --fixed-strings: Search term as a literal string
+" --ignore-case: Case insensitive search
+" --no-ignore: Do not respect .gitignore, etc...
+" --hidden: Search hidden files and folders
+" --follow: Follow symlinks
+" --glob: Additional conditions for search (in this case ignore everything in the .git/ folder)
+" --color: Search color options
+
+" remove --no-ignore because most of the time I do want to respect ignore
+" but remove shellescape so the --no-ignore flag, and any other flag
+" can be passed in https://github.com/junegunn/fzf.vim/issues/838
+command! -bang -nargs=* Rg
+    \ call fzf#vim#grep(
+    \   'rg --column --line-number --no-heading --fixed-strings --ignore-case --hidden --follow --glob "!.git/*" --color=always '.<q-args>, 1,
+    \   <bang>0 ? fzf#vim#with_preview('up:60%')
+    \           : fzf#vim#with_preview('right:50%:hidden', '?'),
+    \   <bang>0)
+
+command! -bang -nargs=* Gg
+    \ call fzf#vim#grep(
+    \   'git grep --line-number --ignore-case --color=always '.shellescape(<q-args>), 0,
+    \   { 'dir': systemlist('git rev-parse --show-toplevel')[0] }, <bang>0)
+
+command! -bang -nargs=? -complete=dir Files
+    \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
+
+command! -bang -nargs=? GitFiles
+    \ call fzf#vim#gitfiles(<q-args>, fzf#vim#with_preview(), <bang>0)
+
+nmap // :BLines!<CR>
+nmap ?? :Rg!<CR>
+
+" https://github.com/junegunn/fzf.vim/issues/162
+let g:fzf_commands_expect = 'enter'
+
+" [Buffers] Jump to the existing window if possible
+let g:fzf_buffers_jump = 1
+
+nnoremap <C-f> :Files<CR>
+nnoremap <C-p> :GitFiles<CR>
+" Open commits list
+noremap <Leader>c :Commits<CR>
+" Open buffers list
+noremap <Leader>b :Buffers<CR>
+" }}}
+
+" NERDTree{{{
+map <C-t> :NERDTreeToggle<CR>
+let NERDTreeShowHidden=1
+let NERDTreeHijackNetrw=0
+"let g:WebDevIconsUnicodeDecorateFolderNodes = 0
+" auto delete the buffer of the file you just deleted with NERDTree
+let NERDTreeAutoDeleteBuffer = 1
+let NERDTreeMinimalUI=1
+let NERDTreeIgnore = ['\.pyc$', '\.DS_Store$', '\.swp$', '\.swo$']
+
+" NERDTress File highlighting
+" https://github.com/scrooloose/nerdtree/issues/433#issuecomment-92590696
+" https://upload.wikimedia.org/wikipedia/commons/1/15/Xterm_256color_chart.svg
+function! NERDTreeHighlightFile(extension, fg, bg, guifg, guibg)
+    exec 'autocmd filetype nerdtree highlight ' . a:extension .' ctermbg='. a:bg .' ctermfg='. a:fg .' guibg='. a:guibg .' guifg='. a:guifg
+    exec 'autocmd filetype nerdtree syn match ' . a:extension .' #^\s\+.*'. a:extension .'$#'
+endfunction
+
+augroup nerdtree
+    autocmd!
+    " open NERDTree automatically on vim start, even if no file is specified
+    " focus back on main window after
+    autocmd StdinReadPre * let s:std_in=1
+    autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree |
+        \ wincmd p | endif
+
+    " If more than one window and previous buffer was NERDTree, go back to it.
+    autocmd BufEnter * if bufname('#') =~# "^NERD_tree_" && winnr('$') > 1 | b# | endif
+
+    " If more than one window and previous buffer was NERDTree, go back to it.
+    autocmd BufEnter * if bufname('#') =~# "^NERD_tree_" && winnr('$') > 1 | b# | endif
+
+    " Close vim if nerdtree is the only open buffer
+    autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+
+    autocmd FileType nerdtree setlocal nolist
+
+    call NERDTreeHighlightFile('config', 'yellow', 'none', 'yellow', '#151515')
+    call NERDTreeHighlightFile('conf', 'yellow', 'none', 'yellow', '#151515')
+    call NERDTreeHighlightFile('json', 'yellow', 'none', 'yellow', '#151515')
+    call NERDTreeHighlightFile('properties', 'yellow', 'none', 'yellow', '#151515')
+    call NERDTreeHighlightFile('rc', 'yellow', 'none', 'yellow', '#151515')
+    call NERDTreeHighlightFile('ignore', 'yellow', 'none', 'yellow', '#151515')
+    call NERDTreeHighlightFile('yml', '177', 'none', '#d787ff', '#151515')
+    call NERDTreeHighlightFile('yaml', '177', 'none', '#d787ff', '#151515')
+    call NERDTreeHighlightFile('md', '135', 'none', '#af5fff', '#151515')
+    call NERDTreeHighlightFile('html', '202', 'none', '#ff5f00', '#151515')
+    call NERDTreeHighlightFile('hbs', '203', 'none', '#ff5f5f', '#151515')
+    call NERDTreeHighlightFile('css', '159', 'none', '#afffff', '#151515')
+    call NERDTreeHighlightFile('js', '172', 'none', '#d78700', '#151515')
+    call NERDTreeHighlightFile('php', '027', 'none', '#005fff', '#151515')
+    call NERDTreeHighlightFile('log', '240', 'none', '#585858', '#151515')
+    call NERDTreeHighlightFile('sh', '117', 'none', '#87d7ff', '#151515')
+    call NERDTreeHighlightFile('xml', '158', 'none', '#afffd7', '#151515')
+    call NERDTreeHighlightFile('java', '141', 'none', '#af87ff', '#151515')
+augroup END
+" }}}
+
+" ale {{{
+autocmd BufEnter dist/* ALEDisableBuffer
+let g:ale_lint_on_text_changed = 'normal'
+let g:ale_lint_on_insert_leave = 1
+let g:ale_completion_enabled = 1
+let g:ale_completion_delay = 1000
+" navigate to next/ previous error
+nmap <silent> <C-j> <Plug>(ale_previous_wrap)
+nmap <silent> <C-k> <Plug>(ale_next_wrap)
+
+" :help ale_linters
+let g:ale_linters = {
+            \'python': ['pycodestyle'],
+            \'javascript': ['eslint']
+            \}
+
+let g:ale_fixers = {
+            \'python': ['black'],
+            \'javascript': ['prettier'],
+            \'ruby': ['rubocop'],
+            \}
+
+let g:ale_python_black_options = '-l 80'
+" }}}
+
+" fugitive {{{
+" Set status line to include git branch
+if PlugLoaded('vim-fugitive')
+    set statusline=%f\ %{fugitive#statusline()}%r%m%=%c,%l/%L\ %P
+    set autoread
+endif
+
+" }}}
+
+" vim-shell {{{
+" https://github.com/xolox/vim-shell#the-gshell_fullscreen_items-option
+let g:shell_fullscreen_items = "mT"
+let g:shell_fullscreen_always_on_top = 0
+" }}}
+
+" ctrlsf {{{
 if has("macunix")
   let g:ctrlsf_ackprg = '/usr/local/bin/rg'
 elseif has("unix")
   let g:ctrlsf_ackprg = '/usr/bin/rg'
 endif
 
+let g:ctrlp_working_path_mode = 0
+let g:ctrlp_by_filename = 0
+let g:ctrlp_regexp_search = 0
+let g:ctrlp_use_caching = 1
 let g:ctrlsf_winsize = '33%'
 let g:ctrlsf_auto_close = 0
 let g:ctrlsf_confirm_save = 0
@@ -268,26 +499,50 @@ nmap <leader>C :CtrlSFToggle<CR>
 
 " Open Ggrep results in a quickfix window
 autocmd QuickFixCmdPost *grep* cwindow
+" }}}
 
-" Fix Vim's ridiculous line wrapping model
-set ww=<,>,[,],h,l
+" vim-multiple-cursors {{{
+let g:multi_cursor_start_word_key = '<C-d>'
+let g:multi_cursor_next_key='<C-n>'
+let g:multi_cursor_prev_key='<C-p>'
+let g:multi_cursor_skip_key='<C-x>'
+" }}}
 
-if has('win32')
-  nmap <leader>t :tab term<CR>
-else
-  nmap <leader>t :tab term<CR>source $HOME/.bash_profile<CR>clear<CR>
+" }}}
+
+" Misc {{{
+" add folding for different filetypes {{{
+augroup folding
+    autocmd!
+    autocmd FileType vim setlocal foldmethod=marker
+    autocmd FileType javascript setlocal foldmethod=syntax
+augroup END
+
+augroup misc
+    autocmd!
+    " resize windows on terminal size change
+    autocmd VimResized * Tabdo wincmd =
+    " Keeping this here even backups are disabled just in case I ever enable it
+    " don't create swap files for files in the Dropbox folder
+    " taken from https://gist.github.com/frangio/985684
+    autocmd BufNewFile,BufRead *
+        \ if expand('%:~') =~ '^\~/Dropbox' |
+        \   set noswapfile |
+        \ else |
+        \   set swapfile |
+        \ endif
+
+    " crontab
+    autocmd filetype crontab setlocal nobackup nowritebackup
+augroup END
+
+set errorformat+=%f[%l\\,%c]:\ %m,%m
+
+" local (gitignored) settings
+if filereadable(expand('$HOME/.local.vim'))
+    source $HOME/.local.vim
 endif
 
-let g:ale_linters = {
-\   'javascript': ['eslint'],
-\}
+" }}}
 
-
-nmap <silent> <C-n> <Plug>(ale_previous_wrap)
-nmap <silent> <C-m> <Plug>(ale_next_wrap)
-
-autocmd BufEnter dist/* ALEDisableBuffer
-
-" Resize splits in all tabs upon window resize
-" https://vi.stackexchange.com/a/206
-autocmd VimResized * Tabdo wincmd =
+set secure
