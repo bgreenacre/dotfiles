@@ -29,6 +29,7 @@ Plug 'editorconfig/editorconfig-vim'
 Plug 'moll/vim-node'
 Plug 'xolox/vim-misc'
 Plug 'xolox/vim-shell'
+Plug 'Xuyuanp/nerdtree-git-plugin'
 
 call plug#end()
 " }}}
@@ -185,6 +186,7 @@ set ww=<,>,[,],h,l
 
 set wmw=0
 set wmh=0
+set conceallevel=3
 
 " rg grep {{{
 if executable('rg')
@@ -345,10 +347,24 @@ map <C-t> :NERDTreeToggle<CR>
 let NERDTreeShowHidden=1
 let NERDTreeHijackNetrw=0
 "let g:WebDevIconsUnicodeDecorateFolderNodes = 0
+let g:NERDTreeWinSize=45
 " auto delete the buffer of the file you just deleted with NERDTree
 let NERDTreeAutoDeleteBuffer = 1
 let NERDTreeMinimalUI=1
 let NERDTreeIgnore = ['\.pyc$', '\.DS_Store$', '\.swp$', '\.swo$']
+
+let g:NERDTreeIndicatorMapCustom = {
+    \ "Modified"  : "✹",
+    \ "Staged"    : "✚",
+    \ "Untracked" : "✭",
+    \ "Renamed"   : "➜",
+    \ "Unmerged"  : "═",
+    \ "Deleted"   : "✖",
+    \ "Dirty"     : "✗",
+    \ "Clean"     : "✔︎",
+    \ 'Ignored'   : '☒',
+    \ "Unknown"   : "?"
+    \ }
 
 " NERDTress File highlighting
 " https://github.com/scrooloose/nerdtree/issues/433#issuecomment-92590696
