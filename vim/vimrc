@@ -60,6 +60,7 @@ endif
 " regular vim only {{{
 if !has('nvim')
     set hlsearch
+    set incsearch
 
     " Enable mouse mode working past 220th column
     " https://stackoverflow.com/questions/7000960/in-vim-why-doesnt-my-mouse-work-past-the-220th-column
@@ -97,8 +98,6 @@ set ruler
 set colorcolumn=80
 " Show matches
 set showmatch
-
-set scrolloff=5
 " Show file title in terminal tab
 set title
 " Show line numbers
@@ -184,6 +183,9 @@ endif
 " Fix Vim's ridiculous line wrapping model
 set ww=<,>,[,],h,l
 
+set wmw=0
+set wmh=0
+
 " rg grep {{{
 if executable('rg')
     set grepprg=rg\ --vimgrep
@@ -215,13 +217,13 @@ if bufwinnr(1)
 endif
 
 " Easy window navigation
-no <C-j> <C-W>j<C-W>_
-no <C-k> <C-W>k<C-W>_
-no <C-h> <C-W>h
-no <C-l> <C-W>l
-no <C-e> <C-W>=
-no <C-b> <C-W><bar>
-no <C-d> <end>
+nnoremap <C-j> <C-W>j<C-W>_
+nnoremap <C-k> <C-W>k<C-W>_
+nnoremap <C-h> <C-W>h
+nnoremap <C-l> <C-W>l
+nnoremap <C-e> <C-W>=
+nnoremap <C-b> <C-W><bar>
+nnoremap <C-d> <end>
 
 " easy pasting
 map <C-P> :set paste<Return>
@@ -295,8 +297,6 @@ endif
 " Also load indent files, to automatically do language-dependent indenting.
 filetype plugin indent on
 
-autocmd Filetype javascript,html setlocal ts=2 sw=2 sts=2 expandtab
-
 " Force some file types to be other file types
 au BufRead,BufNewFile *.ejs,*.mustache setfiletype html
 au BufRead,BufNewFile *.json setfiletype json
@@ -306,6 +306,9 @@ au BufNewFile,BufReadPost *.md set filetype=markdown
 " Sync syntax highlight for js files
 autocmd BufEnter *.{js,jsx,ts,tsx} :syntax sync fromstart
 autocmd BufLeave *.{js,jsx,ts,tsx} :syntax sync clear
+
+" Set js locals
+autocmd Filetype javascript,html setlocal ts=2 sw=2 sts=2 expandtab cc=120
 " }}}
 
 " Plugins Settings {{{
@@ -402,8 +405,8 @@ let g:ale_lint_on_insert_leave = 1
 let g:ale_completion_enabled = 1
 let g:ale_completion_delay = 1000
 " navigate to next/ previous error
-nmap <silent> <C-j> <Plug>(ale_previous_wrap)
-nmap <silent> <C-k> <Plug>(ale_next_wrap)
+nmap <silent> <C-n> <Plug>(ale_previous_wrap)
+nmap <silent> <C-m> <Plug>(ale_next_wrap)
 
 " :help ale_linters
 let g:ale_linters = {
