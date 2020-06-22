@@ -76,7 +76,7 @@ Plugin 'editorconfig/editorconfig-vim'
 Plugin 'moll/vim-node'
 Plugin 'xolox/vim-misc'
 Plugin 'xolox/vim-shell'
-Plugin 'pechorin/any-jump.vim'
+"Plugin 'pechorin/any-jump.vim'
 Plugin 'ryanoasis/vim-devicons'
 
 " All of your Plugins must be added before the following line
