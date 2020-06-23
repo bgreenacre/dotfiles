@@ -306,14 +306,14 @@ filetype plugin indent on
 au BufRead,BufNewFile *.ejs,*.mustache setfiletype html
 au BufRead,BufNewFile *.json setfiletype json
 au BufRead,BufNewFile *.json.* setfiletype json
-au BufNewFile,BufReadPost *.md set filetype=markdown
+au BufNewFile,BufReadPost *.md setfiletype=markdown
 
 " Sync syntax highlight for js files
 autocmd BufEnter *.{js,jsx,ts,tsx} :syntax sync fromstart
 autocmd BufLeave *.{js,jsx,ts,tsx} :syntax sync clear
 
 " Set js locals
-autocmd Filetype javascript,html setlocal ts=2 sw=2 sts=2 expandtab cc=120
+autocmd Filetype javascript,html,handlebars setlocal ts=2 sw=2 sts=2 expandtab cc=120
 " }}}
 
 " Plugins Settings {{{
