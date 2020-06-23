@@ -260,7 +260,7 @@ noremap <Leader>] :bnext<CR>
 noremap <Leader>[ :bprev<CR>
 
 " Save and quit buffer
-noremap <Leader>s :write<CR>
+noremap <Leader>w :write<CR>
 noremap <Leader>q :quit<CR>
 
 " lnext and lprevious
@@ -351,7 +351,7 @@ let g:NERDTreeWinSize=45
 " auto delete the buffer of the file you just deleted with NERDTree
 let NERDTreeAutoDeleteBuffer = 1
 let NERDTreeMinimalUI=1
-let NERDTreeIgnore = ['\.pyc$', '\.DS_Store$', '\.swp$', '\.swo$']
+let NERDTreeIgnore = ['\.pyc$', '\.DS_Store$', '\.swp$', '\.swo$', '\.git$']
 
 let g:NERDTreeIndicatorMapCustom = {
     \ "Modified"  : "✹",
