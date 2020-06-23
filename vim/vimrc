@@ -21,7 +21,7 @@ Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-surround'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'w0rp/ale'
-Plug 'styled-components/vim-styled-components'
+Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-markdown'
 Plug 'dyng/ctrlsf.vim'
