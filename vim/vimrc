@@ -287,6 +287,9 @@ nmap cc :Commands<CR>
 " Substitute the word under the cursor.
 nmap <leader>s :%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>
 
+" Auto indent entire file
+nnoremap <Leader>= gg=G
+
 if has('win32')
   nmap <leader>t :tab term<CR>
 else
