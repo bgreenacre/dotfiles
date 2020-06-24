@@ -30,6 +30,7 @@ Plug 'moll/vim-node'
 Plug 'xolox/vim-misc'
 Plug 'xolox/vim-shell'
 Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'itmammoth/doorboy.vim'
 
 call plug#end()
 " }}}
@@ -73,6 +74,9 @@ if !has('nvim')
 endif
 " }}}
 "
+" enable 256 colors
+set t_Co=256
+set t_ut=
 
 set mouse=a
 
@@ -227,9 +231,13 @@ nnoremap <C-e> <C-W>=
 nnoremap <C-b> <C-W><bar>
 nnoremap <C-d> <end>
 
-" easy pasting
-map <C-P> :set paste<Return>
-map <C-A> :set nopaste<Return>
+" easy copy and pasting
+"map <C-P> :set paste<Return>
+"map <C-A> :set nopaste<Return>
+vmap <C-c> "+y
+vmap <C-x> "+c
+vmap <C-v> c<ESC>"+p
+imap <C-v> <ESC>"+pa
 
 " Navigate between display lines
 noremap  <silent> <Up>   gk
@@ -267,9 +275,6 @@ noremap <Leader>q :quit<CR>
 nnoremap <Leader>j :lnext<CR>
 nnoremap <Leader>k :lprevious<CR
 
-" Copy to clipboard
-vnoremap <C-c> "*y<CR>
-
 " Align blocks of text and keep them selected
 vmap < <gv
 vmap > >gv
@@ -300,6 +305,7 @@ endif
 " Filetype settings {{{
 " Enable file type detection.
 " Also load indent files, to automatically do language-dependent indenting.
+filetype on
 filetype plugin indent on
 
 " Force some file types to be other file types
