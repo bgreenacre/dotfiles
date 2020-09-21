@@ -181,7 +181,7 @@ set signcolumn=yes
 
 " Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
 " delays and poor user experience.
-set updatetime=50
+set updatetime=5000
 
 " Clipboard settings
 if has("macunix") || has('win32')
@@ -228,11 +228,13 @@ if bufwinnr(1)
 endif
 
 " Easy window navigation
-nnoremap <C-j> <C-W>j<C-W>_
-nnoremap <C-k> <C-W>k<C-W>_
+"nnoremap <C-j> <C-W>j<C-W>_
+nnoremap <C-j> <C-W>j
+"nnoremap <C-k> <C-W>k<C-W>_
+nnoremap <C-k> <C-W>k
 nnoremap <C-h> <C-W>h
 nnoremap <C-l> <C-W>l
-nnoremap <C-e> <C-W>=
+"nnoremap <C-e> <C-W>=
 nnoremap <C-b> <C-W><bar>
 nnoremap <C-d> <end>
 
@@ -525,7 +527,7 @@ augroup END
 augroup misc
     autocmd!
     " resize windows on terminal size change
-    autocmd VimResized * Tabdo wincmd =
+    autocmd VimResized * wincmd =
     " Keeping this here even backups are disabled just in case I ever enable it
     " don't create swap files for files in the Dropbox folder
     " taken from https://gist.github.com/frangio/985684
