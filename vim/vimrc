@@ -379,7 +379,7 @@ let NERDTreeAutoDeleteBuffer = 1
 let NERDTreeMinimalUI=1
 let NERDTreeIgnore = ['\.pyc$', '\.DS_Store$', '\.swp$', '\.swo$', '\.git$']
 
-let g:NERDTreeIndicatorMapCustom = {
+let g:NERDTreeGitStatusIndicatorMapCustom = {
     \ "Modified"  : "✹",
     \ "Staged"    : "✚",
     \ "Untracked" : "✭",
