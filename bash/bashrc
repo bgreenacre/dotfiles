@@ -68,6 +68,8 @@ reset=$(tput -Txterm sgr0)
 
 # Nicely formatted terminal prompt
 export PS1='\n\[$bold\]\[$lt_blue\][\[$dk_blue\]\@\[$lt_blue\]]-[\[$green\]\u\[$yellow\]@\[$green\]\h\[$lt_blue\]]-[\[$pink\]\w\[$lt_blue\]]\[\033[0;33m\]$(__vcs_name) \[\033[00m\]\[$reset\]\n\[$reset\]\$ '
+export MOZ_USE_XINPUT2=1
+export MOZ_X11_EGL=1
 
 alias dirs='dirs -v'
 alias ls='ls -F --color=always'
