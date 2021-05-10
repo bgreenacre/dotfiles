@@ -1,4 +1,5 @@
 set nocompatible
+filetype off                  " required
 " vim-plug {{{
 " Automatically install vim-plug and run PlugInstall if vim-plug not found
 " see https://github.com/junegunn/vim-plug/wiki/faq#automatic-installation
