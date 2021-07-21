@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+usage() {
+    echo "vid-to-gif <vid file to convert>" 1>&2
+    exit 1
+}
+
+if [ "$#" = 0 ]; then
+    usage
+fi
+
+input="$1"
+
+if [ ! -f "${input}" ]; then
+    echo "File does not exist" 1>&2
+    exit 1
+fi
+
+echo "input = '${input}'"
+
+ffmpeg -i "${input}" -pix_fmt rgb24 -r 10 -f gif - | gifsicle --optimize=3 --delay=3 > "${input}".gif
