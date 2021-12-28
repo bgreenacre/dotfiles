@@ -18,4 +18,6 @@ fi
 
 echo "input = '${input}'"
 
-ffmpeg -i "${input}" -pix_fmt rgb24 -r 10 -f gif - | gifsicle --optimize=3 --delay=3 > "${input}".gif
+ffmpeg -y -i "${input}" -vf fps=15,scale=1200:-1:flags=lanczos,palettegen _tmp_palettegen.png
+ffmpeg -y -i "${input}" -i _tmp_palettegen.png -filter_complex fps=15,scale=1200:-1:flags=lanczos,paletteuse -f gif - | gifsicle --optimize=3 --delay=5 > "${input}".gif
+rm -f _tmp_palettegen.png

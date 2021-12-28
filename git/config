@@ -1,8 +1,21 @@
 [user]
 	name = "Brian Greenacre"
 	email = bgreenacre42@gmail.com
-[push]
-	default = matching
 [core]
 	autocrlf = input
 	editor = vim
+[push]
+	default = simple
+[color]
+	ui = auto
+	pager = true
+[color "status"]
+	added = yellow
+	changed = green
+	untracked = cyan
+[format]
+	pretty = format:'%Cred%h%Creset -%Cblue%an%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset'
+[pull]
+	rebase = false
+[init]
+	defaultBranch = main

@@ -29,6 +29,19 @@ if [ -d "$HOME/.local/bin" ]; then
     export PATH="$HOME/.local/bin:$PATH"
 fi
 
+if [ -f "$HOME/.cargo/env" ]; then
+    source $HOME/.cargo/env
+fi
+
+if [ -f "$HOME/.kube/completion.bash.inc" ]; then
+  # Kubectl shell completion
+  source "$HOME/.kube/completion.bash.inc"
+fi
+
+if [ -d "$HOME/zig" ]; then
+    export PATH="$HOME/zig:$PATH"
+fi
+
 __has_parent_dir () {
     # Utility function so we can test for things like .git/.hg without firing up a
     # separate process
@@ -82,3 +95,4 @@ alias grep='grep --color=auto -in'
 alias ..='cd ..'
 alias cmus='screen -q -r -D cmus || screen -S cmus $(which cmus)'
 alias rsync='rsync -a --inplace --info=progress2'
+alias loudgain='loudgain -a -k -s e'
