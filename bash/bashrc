@@ -1,5 +1,5 @@
 # add paths
-export PATH="$HOME/bin:$PATH"
+#export PATH="$HOME/bin:$PATH"
 
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
 if [ -d "$HOME/.rvm/bin" ]; then
@@ -25,9 +25,9 @@ if [ -d "$HOME/.nodenv/bin" ]; then
     eval "$(nodenv init -)"
 fi
 
-if [ -d "$HOME/.local/bin" ]; then
-    export PATH="$HOME/.local/bin:$PATH"
-fi
+#if [ -d "$HOME/.local/bin" ]; then
+#    export PATH="$HOME/.local/bin:$PATH"
+#fi
 
 if [ -f "$HOME/.cargo/env" ]; then
     source $HOME/.cargo/env
@@ -41,6 +41,8 @@ fi
 if [ -d "$HOME/zig" ]; then
     export PATH="$HOME/zig:$PATH"
 fi
+
+type aws_completer &>/dev/null && complete -C aws_completer aws
 
 __has_parent_dir () {
     # Utility function so we can test for things like .git/.hg without firing up a
@@ -94,5 +96,6 @@ alias mv='mv -iv'
 alias grep='grep --color=auto -in'
 alias ..='cd ..'
 alias cmus='screen -q -r -D cmus || screen -S cmus $(which cmus)'
-alias rsync='rsync -a --inplace --info=progress2'
+alias rsync='rsync -a --info=progress2'
 alias loudgain='loudgain -a -k -s e'
+alias dd='dd status=progress'
