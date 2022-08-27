@@ -2,7 +2,7 @@
 #export PATH="$HOME/bin:$PATH"
 
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-if [ -d "$HOME/.rvm/bin" ]; then
+if [ -d "$HOME/.rvm/bin" ] && [[ $PATH =~ "$HOME/.rvm/bin" ]]; then
     export PATH="$HOME/.rvm/bin:$PATH"
 fi
 
@@ -10,24 +10,22 @@ if [ -f "$HOME/.rvm/scripts/rvm" ]; then
     source "$HOME/.rvm/scripts/rvm"
 fi
 
-# export NSS_SSL_CBC_RANDOM_IV=0
-
-if [ -d "$HOME/packer" ]; then
+if [ -d "$HOME/packer" ] && [[ $PATH =~ "$HOME/packer" ]]; then
     export PATH="$HOME/packer:$PATH"
 fi
 
-if [ -d "$HOME/.config/composer/vendor/bin" ]; then
+if [ -d "$HOME/.config/composer/vendor/bin" ] && [[ $PATH =~ "$HOME/.config/composer/vendor/bin" ]]; then
     export PATH="$HOME/.config/composer/vendor/bin:$PATH"
 fi
 
-if [ -d "$HOME/.nodenv/bin" ]; then
+if [ -d "$HOME/.nodenv/bin" ] && [[ $PATH =~ "$HOME/.nodenv/bin" ]]; then
     export PATH="$HOME/.nodenv/bin:$PATH"
     eval "$(nodenv init -)"
 fi
 
-#if [ -d "$HOME/.local/bin" ]; then
-#    export PATH="$HOME/.local/bin:$PATH"
-#fi
+if [ -d "$HOME/.local/bin" ] && [[ $PATH =~ "$HOME/.local/bin" ]]; then
+    export PATH="$HOME/.local/bin:$PATH"
+fi
 
 if [ -f "$HOME/.cargo/env" ]; then
     source $HOME/.cargo/env
@@ -38,7 +36,7 @@ if [ -f "$HOME/.kube/completion.bash.inc" ]; then
   source "$HOME/.kube/completion.bash.inc"
 fi
 
-if [ -d "$HOME/zig" ]; then
+if [ -d "$HOME/zig" ] && [[ $PATH =~ "$HOME/zig" ]]; then
     export PATH="$HOME/zig:$PATH"
 fi
 
@@ -99,3 +97,5 @@ alias cmus='screen -q -r -D cmus || screen -S cmus $(which cmus)'
 alias rsync='rsync -a --info=progress2'
 alias loudgain='loudgain -a -k -s e'
 alias dd='dd status=progress'
+alias streamlink='streamlink --player "flatpak run org.videolan.VLC"'
+alias iptv='nohup flatpak run org.videolan.VLC https://iptv-org.github.io/iptv/index.category.m3u > /dev/null &'
