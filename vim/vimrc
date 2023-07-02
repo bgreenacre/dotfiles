@@ -453,7 +453,8 @@ nmap <silent> <C-m> <Plug>(ale_next_wrap)
 " :help ale_linters
 let g:ale_linters = {
             \'python': ['pycodestyle'],
-            \'javascript': ['eslint']
+            \'javascript': ['eslint'],
+            \'php': ['php -l']
             \}
 
 let g:ale_fixers = {
