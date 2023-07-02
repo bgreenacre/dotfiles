@@ -24,7 +24,7 @@ if [ -d "$HOME/.nodenv/bin" ]; then
 fi
 
 if [ -d "$HOME/.local/bin" ]; then
-    export PATH="$HOME/.local/bin:$PATH"
+    export PATH="${PATH:-$HOME/.local/bin}"
 fi
 
 if [ -f "$HOME/.cargo/env" ]; then
@@ -83,6 +83,7 @@ reset=$(tput -Txterm sgr0)
 export PS1='\n\[$bold\]\[$lt_blue\][\[$dk_blue\]\@\[$lt_blue\]]-[\[$green\]\u\[$yellow\]@\[$green\]\h\[$lt_blue\]]-[\[$pink\]\w\[$lt_blue\]]\[\033[0;33m\]$(__vcs_name) \[\033[00m\]\[$reset\]\n\[$reset\]\$ '
 export MOZ_USE_XINPUT2=1
 export MOZ_X11_EGL=1
+export EDITOR=vim
 
 alias dirs='dirs -v'
 alias ls='ls -F --color=always'
@@ -98,9 +99,10 @@ alias rsync='rsync -a --info=progress2'
 alias loudgain='loudgain -a -k -s e'
 alias dd='dd status=progress'
 alias streamlink='streamlink --player "flatpak run org.videolan.VLC"'
-alias iptv='nohup flatpak run org.videolan.VLC https://iptv-org.github.io/iptv/index.category.m3u > /dev/null &'
+alias iptv='nohup flatpak run org.videolan.VLC https://iptv-org.github.io/iptv/index.category.m3u >/dev/null 2>&1 &'
 alias composer='docker run --rm -it --user $(id -u):$(id -g) -v $(pwd):/opt -w /opt composer:latest'
-alias php='docker run --rm -it --user $(id -u):$(id -g) -v $(pwd):/opt -w /opt php:8.1-cli'
+alias php='docker run --rm -it --user $(id -u):$(id -g) -v $(pwd):/app -w /app php:8.1-cli php'
+alias php-serve='docker run --rm -it -p 8000:8000 --user $(id -u):$(id -g) -v $(pwd):/app -w /app php:8.1-cli php -S 0.0.0.0:8000'
 #alias mysql-output-to-csv='sed "s/'/\'/;s/\t/\",\"/g;s/^/\"/;s/$/\"/;s/\n//g"'
 alias pip-upgrade="pip freeze --user | cut -d'=' -f1 | xargs -n1 pip install -U"
 alias pip-upgrade-venv="pip freeze | cut -d'=' -f1 | xargs -n1 pip install -U"
