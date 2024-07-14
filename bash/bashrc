@@ -31,6 +31,10 @@ if [ -f "$HOME/.cargo/env" ]; then
     source $HOME/.cargo/env
 fi
 
+if [ -d "$HOME/go/bin" ]; then
+    export PATH="$HOME/go/bin:$PATH"
+fi
+
 if [ -f "$HOME/.kube/completion.bash.inc" ]; then
   # Kubectl shell completion
   source "$HOME/.kube/completion.bash.inc"
@@ -106,4 +110,4 @@ alias php-serve='docker run --rm -it -p 8000:8000 --user $(id -u):$(id -g) -v $(
 #alias mysql-output-to-csv='sed "s/'/\'/;s/\t/\",\"/g;s/^/\"/;s/$/\"/;s/\n//g"'
 alias pip-upgrade="pip freeze --user | cut -d'=' -f1 | xargs -n1 pip install -U"
 alias pip-upgrade-venv="pip freeze | cut -d'=' -f1 | xargs -n1 pip install -U"
-
+alias yt-dlp="yt-dlp --embed-chapters --embed-subs --embed-metadata"
