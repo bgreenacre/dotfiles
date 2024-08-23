@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+IP=$1
+
+if [[ ($IP =~ ^10\.) || ($IP =~ ^192.168\.) || ($IP =~ ^172.16\.) ]]
+then
+    echo "LAN"
+    exit 0
+fi
+
+result=$(whois $IP | awk '/Country/ {country=$2} /NetName/ {netname=$2} END {print country,netname}')
+echo $result
+
