@@ -108,9 +108,10 @@ alias dd='dd status=progress'
 alias streamlink='streamlink --player "flatpak" --player-args "run org.videolan.VLC"'
 alias iptv='nohup flatpak run org.videolan.VLC https://iptv-org.github.io/iptv/index.category.m3u >/dev/null 2>&1 &'
 alias composer='docker run --rm -it --user $(id -u):$(id -g) -v ${COMPOSER_HOME:-$HOME/.composer}:/tmp -v $(pwd):/opt -w /opt composer:latest'
-alias php='docker run --rm -it --user $(id -u):$(id -g) -v $(pwd):/app -w /app php:8.1-cli php'
-alias php-serve='docker run --rm -it -p 8000:8000 --user $(id -u):$(id -g) -v $(pwd):/app -w /app php:8.1-cli php -S 0.0.0.0:8000'
+alias php='docker run --rm -it --user $(id -u):$(id -g) -v $(pwd):/app -w /app php:8.3-cli php'
+alias php-serve='docker run --rm -it -p 8000:8000 --user $(id -u):$(id -g) -v $(pwd):/app -w /app php:8.3-cli php -S 0.0.0.0:8000'
 #alias mysql-output-to-csv='sed "s/'/\'/;s/\t/\",\"/g;s/^/\"/;s/$/\"/;s/\n//g"'
 alias pip-upgrade="pip freeze --user | cut -d'=' -f1 | xargs -n1 pip install -U"
 alias pip-upgrade-venv="pip freeze | cut -d'=' -f1 | xargs -n1 pip install -U"
 alias yt-dlp="yt-dlp --embed-chapters --embed-subs --embed-metadata"
+alias sail='sh $([ -f sail ] && echo sail || echo vendor/bin/sail)'
