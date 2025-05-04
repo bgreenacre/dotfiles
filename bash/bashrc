@@ -88,15 +88,17 @@ reset=$(tput -Txterm sgr0)
 
 # Nicely formatted terminal prompt
 export PS1='\n\[$bold\]\[$lt_blue\][\[$dk_blue\]\@\[$lt_blue\]]-[\[$green\]\u\[$yellow\]@\[$green\]\h\[$lt_blue\]]-[\[$pink\]\w\[$lt_blue\]]\[\033[0;33m\]$(__vcs_name) \[\033[00m\]\[$reset\]\n\[$reset\]\$ '
-export MOZ_USE_XINPUT2=1
-export MOZ_X11_EGL=1
+#export MOZ_USE_XINPUT2=1
+#export MOZ_X11_EGL=1
 export EDITOR=vim
 
 alias dirs='dirs -v'
 alias ls='ls -F --color=always'
 alias dir='dir -F --color=always'
 alias ll='ls -l'
+alias la='ls -la'
 alias lh='ls -lh'
+alias lha='ls -lha'
 alias cp='cp -iv'
 alias rm='rm -i'
 alias mv='mv -iv'
@@ -114,5 +116,5 @@ alias php-serve='docker run --rm -it -p 8000:8000 --user $(id -u):$(id -g) -v $(
 #alias mysql-output-to-csv='sed "s/'/\'/;s/\t/\",\"/g;s/^/\"/;s/$/\"/;s/\n//g"'
 alias pip-upgrade="pip freeze --user | cut -d'=' -f1 | xargs -n1 pip install -U"
 alias pip-upgrade-venv="pip freeze | cut -d'=' -f1 | xargs -n1 pip install -U"
-alias yt-dlp="yt-dlp --embed-chapters --embed-subs --embed-metadata"
+alias yt-dlp-with-meta="yt-dlp --embed-chapters --embed-subs --embed-metadata"
 alias sail='sh $([ -f sail ] && echo sail || echo vendor/bin/sail)'
