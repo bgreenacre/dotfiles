@@ -118,3 +118,5 @@ alias pip-upgrade="pip freeze --user | cut -d'=' -f1 | xargs -n1 pip install -U"
 alias pip-upgrade-venv="pip freeze | cut -d'=' -f1 | xargs -n1 pip install -U"
 alias yt-dlp-with-meta="yt-dlp --embed-chapters --embed-subs --embed-metadata"
 alias sail='sh $([ -f sail ] && echo sail || echo vendor/bin/sail)'
+alias clip_prettyjson='wl-paste | jq | wl-copy'
+alias clip_minifyjson='wl-paste | jq -c | wl-copy'
